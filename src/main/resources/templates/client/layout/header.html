@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<body>
+<header th:fragment="header" class="site-header">
+    <nav class="navbar">
+        <a th:href="@{/}" class="logo">
+            <img th:src="@{/images/banner/Logo.jpg}" alt="PNJ Logo" style="height:40px;">
+        </a>
+        <ul class="nav-links">
+            <li><a th:href="@{/}">Trang chủ</a></li>
+            <li><a th:href="@{/products}">Sản phẩm</a></li>
+            <li><a th:href="@{/about}">Giới thiệu</a></li>
+            <li><a th:href="@{/contact}">Liên hệ</a></li>
+        </ul>
+        <div class="nav-actions">
+            <a href="#" class="cart">🛒 Giỏ hàng</a>
+        </div>
+    </nav>
+</header>
+</body>
+</html>

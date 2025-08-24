@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<body>
+<footer th:fragment="footer" class="site-footer">
+    <div class="footer-container">
+        <div class="footer-about">
+            <h4>PNJ Demo</h4>
+            <p>Trang web mô phỏng PNJ, sử dụng Spring Boot + Thymeleaf.</p>
+        </div>
+        <div class="footer-links">
+            <h4>Liên kết</h4>
+            <ul>
+                <li><a th:href="@{/}">Trang chủ</a></li>
+                <li><a th:href="@{/products}">Sản phẩm</a></li>
+                <li><a th:href="@{/about}">Giới thiệu</a></li>
+                <li><a th:href="@{/contact}">Liên hệ</a></li>
+            </ul>
+        </div>
+        <div class="footer-social">
+            <h4>Kết nối</h4>
+            <a href="#">Facebook</a> | <a href="#">Instagram</a> | <a href="#">YouTube</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; <span th:text="${#dates.format(#dates.createNow(),'yyyy')}"></span> PNJ Demo. All rights reserved.</p>
+    </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>PNJ - Trang chủ</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+
+<!-- Header -->
+<header th:replace="client/layout/header :: header"></header>
+
+<!-- Banner chính -->
+<section class="hero-banner">
+    <img th:src="@{/images/banner/Banner.jpg}" alt="PNJ Banner"/>
+</section>
+
+<!-- Danh mục nổi bật -->
+<section class="categories">
+    <h2>Danh mục nổi bật</h2>
+    <div class="category-grid">
+        <div class="category-item">
+            <img th:src="@{/images/category/Nhan.jpg}" alt="Nhẫn"/>
+            <p>Nhẫn</p>
+        </div>
+        <div class="category-item">
+            <img th:src="@{/images/category/TrangSucBac.jpg}" alt="Trang sức bạc"/>
+            <p>Trang sức bạc</p>
+        </div>
+        <div class="category-item">
+            <img th:src="@{/images/category/DayChuyen.jpg}" alt="Dây chuyền"/>
+            <p>Dây chuyền</p>
+        </div>
+        <div class="category-item">
+            <img th:src="@{/images/category/BongTai.jpg}" alt="Bông tai"/>
+            <p>Bông tai</p>
+        </div>
+    </div>
+</section>
+
+<!-- Sản phẩm nổi bật -->
+<section class="featured">
+    <h2>Sản phẩm nổi bật</h2>
+    <div class="product-grid">
+        <div class="product-card" th:each="product : ${products}">
+            <img th:src="@{${product.imageUrl}}" th:alt="${product.name}">
+            <h3 th:text="${product.name}">Tên sản phẩm</h3>
+            <p class="price"
+               th:text="${#numbers.formatDecimal(product.price,0,'COMMA',0,'POINT')} + ' đ'">
+                5,000,000 đ
+            </p>
+            <button class="btn-add">Thêm vào giỏ</button>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer th:replace="client/layout/footer :: footer"></footer>
+
+<script th:src="@{/js/home.js}"></script>
+</body>
+</html>
