@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title th:text="${product != null ? product.name : 'PNJ - Nhẫn cưới nam | UI Demo'}">PNJ - Nhẫn cưới nam | UI Demo</title>
+
+    <!-- Bootstrap + Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- App styles & scripts -->
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+
+</head>
+<body class="bg-light">
+
+<header th:replace="client/layout/header :: header"></header>
+
+<!-- PRODUCT -->
+<section class="container my-4">
+    <div class="row g-3">
+        <!-- THUMBNAILS -->
+        <div class="col-12 col-md-1 order-2 order-md-1">
+            <div class="d-flex d-md-block gap-2">
+                <!-- Dùng product.images nếu có, không thì dùng danh sách mặc định -->
+                <th:block th:with="imgs=${product != null and product.images != null} ? ${product.images} : ${{
+                'https://picsum.photos/seed/ring1/600/600',
+                'https://picsum.photos/seed/ring2/600/600',
+                'https://picsum.photos/seed/ring3/600/600',
+                'https://picsum.photos/seed/ring4/600/600'
+                }}">
+                    <img class="thumb"
+                         th:each="img,idx : ${imgs}"
+                         th:src="${img}"
+                         th:alt="'thumb' + ${idx.index + 1}">
+                </th:block>
+            </div>
+        </div>
+
+        <!-- MAIN IMAGE -->
+        <div class="col-12 col-md-7 order-1 order-md-2">
+            <div class="bg-white p-2 rounded-4 shadow-sm h-100 d-flex align-items-center justify-content-center">
+                <img id="mainImage" class="img-fluid rounded-3"
+                     th:src="${product != null and product.images != null} ? ${product.images[0]} : 'https://picsum.photos/seed/ring1/900/900'"
+                     alt="main">
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div class="col-12 col-md-4 order-3">
+            <h1 class="h5 mb-1" th:text="${product != null ? product.name : 'Nhẫn Cưới nam Vàng Trắng 10K Đính đá ECZ PNJ'}">Nhẫn ...</h1>
+            <div class="text-muted small mb-2" th:text="${product != null ? product.sku : 'XMXMW006385'}">XMXMW006385</div>
+
+            <div class="d-flex align-items-center gap-2 mb-2 text-warning">
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i>
+                <span class="small text-muted" th:text="${product != null ? '(' + product.sold + ' đã bán)' : '(6 đã bán)'}">(6 đã bán)</span>
+            </div>
+
+            <div class="price fs-3 fw-bold mb-1"
+                 th:text="${product != null ? #numbers.formatDecimal(product.price, 0, 'POINT', 0, 'COMMA') + ' ₫' : '5.356.000 ₫'}">
+                5.356.000 ₫
+            </div>
+            <div class="small text-secondary mb-3">
+                Chỉ cần trả
+                <strong th:text="${product != null ? product.monthlyPayment + ' ₫/tháng' : '447.584 ₫/tháng'}">447.584 ₫/tháng</strong>
+            </div>
+
+            <div class="mb-3">
+                <div class="small fw-semibold mb-2">Chọn size *</div>
+                <div class="btn-group" role="group">
+                    <input type="radio" class="btn-check" name="size" id="s17" checked>
+                    <label class="btn btn-outline-dark" for="s17">17</label>
+                    <input type="radio" class="btn-check" name="size" id="s18">
+                    <label class="btn btn-outline-dark" for="s18">18</label>
+                    <input type="radio" class="btn-check" name="size" id="s19">
+                    <label class="btn btn-outline-dark" for="s19">19</label>
+                </div>
+                <a class="small ms-2 text-decoration-none" th:href="@{/size-guide}">Cách đo size nhẫn</a>
+            </div>
+
+            <div class="mb-3">
+                <div class="d-flex align-items-start gap-2 small p-2 rounded-3 bg-white border">
+                    <i class="bi bi-percent fw-bold text-success"></i>
+                    <div>Ưu đãi thêm đến <strong>300K</strong> khi thanh toán quét <strong>VNPAY-QR</strong></div>
+                </div>
+            </div>
+
+            <div class="row g-2 small mb-3">
+                <div class="col-4">
+                    <div class="p-2 bg-white border rounded-3 text-center h-100">
+                        <i class="bi bi-truck"></i> <span class="d-block">Miễn phí giao hàng</span>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="p-2 bg-white border rounded-3 text-center h-100">
+                        <i class="bi bi-headset"></i> <span class="d-block">Phục vụ 24/7</span>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="p-2 bg-white border rounded-3 text-center h-100">
+                        <i class="bi bi-arrow-repeat"></i> <span class="d-block">Thu đổi 48h</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-grid gap-2 mb-3">
+                <button class="btn btn-dark btn-lg rounded-3">Mua ngay</button>
+                <button class="btn btn-outline-dark">Thêm vào giỏ hàng</button>
+                <button class="btn btn-outline-secondary">Gọi ngay (miễn phí)</button>
+            </div>
+
+            <div class="small text-muted">
+                <i class="bi bi-geo-alt"></i> Xem Cửa Hàng Còn Hàng
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TABS -->
+<section class="container my-4">
+    <ul class="nav nav-tabs" id="pills" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#policy" type="button" role="tab">Chính sách hậu mãi</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#desc" type="button" role="tab">Mô tả sản phẩm</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#faq" type="button" role="tab">Câu hỏi thường gặp</button>
+        </li>
+    </ul>
+    <div class="tab-content bg-white border border-top-0 rounded-bottom p-3">
+        <div id="policy" class="tab-pane fade show active">
+            <ul class="mb-0">
+                <li>Miễn phí đổi size 48h tại hệ thống cửa hàng.</li>
+                <li>Vệ sinh, xi mới miễn phí trọn đời.</li>
+                <li>Bảo hành tiêu chuẩn nhà sản xuất.</li>
+            </ul>
+        </div>
+        <div id="desc" class="tab-pane fade">
+            <table class="table table-sm w-auto">
+                <tr><td>Chất liệu</td><td th:text="${product != null ? product.material : 'Vàng trắng 10K'}">Vàng trắng 10K</td></tr>
+                <tr><td>Loại đá</td><td th:text="${product != null ? product.stone : 'ECZ (Xoàn mỹ)'}">ECZ (Xoàn mỹ)</td></tr>
+                <tr><td>Giới tính</td><td th:text="${product != null ? product.gender : 'Nam'}">Nam</td></tr>
+                <tr><td>Thương hiệu</td><td th:text="${product != null ? product.brand : 'PNJ'}">PNJ</td></tr>
+            </table>
+        </div>
+        <div id="faq" class="tab-pane fade">
+            <p class="mb-1"><strong>Hỏi:</strong> Có thể đặt làm theo size riêng không?</p>
+            <p><strong>Đáp:</strong> Có, vui lòng liên hệ để được tư vấn chi tiết.</p>
+        </div>
+    </div>
+</section>
+
+<footer th:replace="client/layout/footer :: footer"></footer>
+<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script defer th:src="@{/js/home.js}"></script>
+</body>
+</html>
