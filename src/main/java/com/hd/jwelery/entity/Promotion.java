@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -13,16 +13,23 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Promotion {
+public class Promotion{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long promotionId;
 
+    @Column(nullable = false)
     private Long discountPercentage;
 
-    private LocalDate startDate;
+    @Column(nullable = false)
+    private String name;
 
-    private LocalDate endDate;
+    @Column(nullable = false)
+    private LocalDateTime startDate;
+
+    @Column(nullable = false)
+    private LocalDateTime endDate;
 
     @ManyToMany
     @JoinTable(
@@ -31,6 +38,5 @@ public class Promotion {
             inverseJoinColumns = @JoinColumn(name = "promotion_id")
     )
     private List<Promotion> promotions;
-
 }
 

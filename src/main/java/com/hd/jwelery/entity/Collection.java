@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,16 +18,20 @@ public class Collection {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long collectionId;
 
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Column(nullable = false)
     private String imageUrl;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+
+    @Column(nullable = false)
+    private LocalDateTime startDate;
+
+    @Column(nullable = false)
+    private LocalDateTime endDate;
 
     @OneToMany(mappedBy = "collection")
     private List<Product> products;

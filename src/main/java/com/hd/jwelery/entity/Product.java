@@ -20,7 +20,7 @@ public class Product {
     private Long productId;
 
     @Column(unique = true)
-    private String productName;
+    private String name;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -29,9 +29,6 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "collection_id")
     private Collection collection;
-
-    @Column(unique = true)
-    private String sku;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String description;
@@ -60,11 +57,6 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews;
 
-    @ManyToMany
-    @JoinTable(
-            name = "product_promotions",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "promotion_id")
-    )
-    private List<Promotion> promotions;
+    @ManyToMany(mappedBy = "promotions")
+    private List<Product> products;
 }

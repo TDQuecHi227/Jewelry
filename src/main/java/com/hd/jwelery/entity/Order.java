@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
@@ -26,14 +26,18 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private Status status = Status.PENDING;
 
-    private BigDecimal subtotalPrice;
-    private BigDecimal discountAmount;
-    private BigDecimal totalPrice;
+    @Column(nullable = false)
+    private Long subtotalPrice;
 
-    @Enumerated(EnumType.STRING)
-    private Channel channel = Channel.WEB;
+    private Long discountAmount;
 
+    @Column(nullable = false)
+    private Long totalPrice;
+
+    @Column(nullable = false)
     private LocalDateTime createdAt;
+
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
@@ -41,9 +45,5 @@ public class Order {
 
     public enum Status {
         PENDING, PAID, SHIPPED, COMPLETED, CANCELED
-    }
-
-    public enum Channel {
-        WEB, STORE, MOBILE_APP
     }
 }
