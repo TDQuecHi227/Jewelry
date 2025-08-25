@@ -475,3 +475,10 @@ body {
 .thumb.active{ border-color:var(--brand); }
 .price{ color:var(--brand); }
 .rounded-4{ border-radius:1rem !important; }
+a.card-link {
+    text-decoration: none;
+    color: inherit;
+}
+a.card-link:hover {
+    text-decoration: none;
+}
