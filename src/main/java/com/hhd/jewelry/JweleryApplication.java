@@ -1,4 +1,4 @@
-package com.hd.jwelery;
+package com.hhd.jewelry;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

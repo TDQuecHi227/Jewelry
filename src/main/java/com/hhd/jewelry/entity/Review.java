@@ -1,4 +1,4 @@
-package com.hd.jwelery.entity;
+package com.hhd.jewelry.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,25 +6,29 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
-@Table(name = "categories")
+@Table(name = "reviews")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category {
+public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long categoryId;
+    private Long reviewId;
 
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
+
+    private Integer rating;
 
     @Column(columnDefinition = "TEXT")
-    private String description;
+    private String comment;
 
     private LocalDateTime createdAt;
-
-    @OneToMany(mappedBy = "category")
-    private List<Product> products;
 }
