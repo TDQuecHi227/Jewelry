@@ -70,35 +70,33 @@
 
         <!-- RIGHT GRID -->
         <div class="col-12 col-md-9">
-            <a th:href="@{/details}" class="card-link">
-                <div id="productGrid" class="row row-cols-2 row-cols-md-3 g-3">
-                    <div class="col" th:each="p : ${products}">
-                        <div class="product-card card h-100"
-                             th:attr="data-name=${p.name}, data-price=${p.salePrice}, data-cat=${p.category}">
-                            <img th:src="@{${p.imageUrl}}" th:alt="${p.name}" class="card-img-top">
+            <div id="productGrid" class="row row-cols-2 row-cols-md-3 g-3">
+                <div class="col" th:each="p : ${products}">
+                    <div class="product-card card h-100"
+                         th:attr="data-name=${p.name}, data-price=${p.salePrice}, data-cat=${p.category}">
+                        <img th:src="@{${p.imageUrl}}" th:alt="${p.name}" class="card-img-top">
 
-                            <div class="card-body text-center">
-                                <h3 class="fs-6 mb-1" th:text="${p.name}">Tên sản phẩm</h3>
-                                <p class="text-muted small mb-2" th:text="${p.description}">Mô tả ngắn sản phẩm…</p>
+                        <div class="card-body text-center">
+                            <h3 class="fs-6 mb-1" th:text="${p.name}">Tên sản phẩm</h3>
+                            <p class="text-muted small mb-2" th:text="${p.description}">Mô tả ngắn sản phẩm…</p>
 
-                                <!-- Hàng 1: giá SALE + % -->
-                                <div class="d-flex align-items-baseline justify-content-center gap-2 mb-1">
-                    <span class="h5 text-danger fw-bold"
-                          th:text="${#numbers.formatDecimal(p.salePrice,0,'COMMA',0,'POINT')} + ' đ'">13.950.000 đ</span>
-                                    <span class="badge rounded-pill bg-warning text-dark fw-semibold"
-                                          th:text="'-' + ${p.discountPercent} + '%'">-8%</span>
-                                </div>
-
-                                <!-- Hàng 2: giá gốc -->
-                                <div class="text-muted text-decoration-line-through small mb-2"
-                                     th:text="${#numbers.formatDecimal(p.oldPrice,0,'COMMA',0,'POINT')} + ' đ'">15.000.000 đ</div>
-
-                                <button class="btn btn-warning w-100 btn-add">Thêm vào giỏ</button>
+                            <!-- Hàng 1: giá SALE + % -->
+                            <div class="d-flex align-items-baseline justify-content-center gap-2 mb-1">
+                <span class="h5 text-danger fw-bold"
+                      th:text="${#numbers.formatDecimal(p.salePrice,0,'COMMA',0,'POINT')} + ' đ'">13.950.000 đ</span>
+                                <span class="badge rounded-pill bg-warning text-dark fw-semibold"
+                                      th:text="'-' + ${p.discountPercent} + '%'">-8%</span>
                             </div>
+
+                            <!-- Hàng 2: giá gốc -->
+                            <div class="text-muted text-decoration-line-through small mb-2"
+                                 th:text="${#numbers.formatDecimal(p.oldPrice,0,'COMMA',0,'POINT')} + ' đ'">15.000.000 đ</div>
+
+                            <button class="btn btn-warning w-100 btn-add">Thêm vào giỏ</button>
                         </div>
                     </div>
                 </div>
-            </a>
+            </div>
         </div>
 
     </div>
