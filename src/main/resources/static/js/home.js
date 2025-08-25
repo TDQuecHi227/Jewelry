@@ -200,17 +200,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // first run
     filter();
 });
-//Detail
-document.addEventListener('DOMContentLoaded', () => {
-    const main = document.getElementById('mainImage');
-    document.querySelectorAll('.thumb').forEach(t => {
-        t.addEventListener('click', () => {
-            document.querySelectorAll('.thumb').forEach(i => i.classList.remove('active'));
-            t.classList.add('active');
-            main.src = t.getAttribute('src');
-        });
-    });
-});
 // === Detail page: gallery behavior ===
 document.addEventListener('DOMContentLoaded', () => {
     const thumbs = document.querySelectorAll('.thumb-list img.thumb');

@@ -13,7 +13,7 @@
     <link rel="stylesheet" th:href="@{/css/home.css}">
 
 </head>
-<body class="bg-light">
+<body class="bg-white">
 
 <header th:replace="client/layout/header :: header"></header>
 
@@ -35,8 +35,8 @@
         </div>
 
         <!-- MAIN IMAGE -->
-        <div class="col-12 col-md-7 order-1 order-md-2">
-            <div class="bg-white p-2 rounded-4 shadow-sm h-100 d-flex align-items-center justify-content-center">
+        <div class="col-12 col-md-5 order-1 order-md-2 ps-md-4">
+            <div class="bg-white p-2 rounded-4 h-100 d-flex align-items-center justify-content-center">
                 <img id="mainImage" class="img-fluid rounded-3"
                      th:src="${product.images[0]}"
                      alt="main">
@@ -44,7 +44,7 @@
         </div>
 
         <!-- RIGHT PANEL -->
-        <div class="col-12 col-md-4 order-3">
+        <div class="col-12 col-md-6 order-3">
             <h1 class="h5 mb-1" th:text="${product.name}">Nhẫn ...</h1>
             <div class="text-muted small mb-2" th:text="${product.sku}">XMXMW006385</div>
 
@@ -101,10 +101,16 @@
                 </div>
             </div>
 
-            <div class="d-grid gap-2 mb-3">
-                <button class="btn btn-dark btn-lg rounded-3">Mua ngay</button>
-                <button class="btn btn-outline-dark">Thêm vào giỏ hàng</button>
-                <button class="btn btn-outline-secondary">Gọi ngay (miễn phí)</button>
+            <div class="d-flex flex-column flex-md-row align-items-stretch justify-content-around">
+                <button class="btn btn-outline-warning">
+                    <span class="sub">Thêm vào giỏ</span>
+                </button>
+                <button class="btn btn-buy-now btn-lg rounded-3">
+                    <span class="title">MUA NGAY</span>
+                    <span class="sub">Giao nhanh từ 2 giờ hoặc nhận tại cửa hàng</span>
+                </button>
+                <button class="btn btn-outline-primary">
+                    <span class="sub">Trả góp 0%</span> </button>
             </div>
 
             <div class="small text-muted">
