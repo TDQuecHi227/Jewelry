@@ -1,8 +1,8 @@
-package com.hd.jwelery.service.impl;
+package com.hhd.jwelery.service.impl;
 
-import com.hd.jwelery.entity.Category;
-import com.hd.jwelery.repository.CategoryRepository;
-import com.hd.jwelery.service.CategoryService;
+import com.hhd.jwelery.entity.Category;
+import com.hhd.jwelery.repository.CategoryRepository;
+import com.hhd.jwelery.service.CategoryService;
 import org.springframework.stereotype.Service;
 
 @Service
