@@ -98,18 +98,20 @@
         <div class="col-12 col-md-9">
             <div id="productGrid" class="row row-cols-2 row-cols-md-3 g-3">
                 <div class="col" th:each="product : ${products}">
-                    <div class="product-card card h-100"
-                         th:attr="data-name=${product.name}, data-price=${product.price}">
-                        <img th:src="@{${product.imageUrl}}" th:alt="${product.name}" class="card-img-top">
-                        <div class="card-body text-center">
-                            <h3 class="fs-6 mb-1" th:text="${product.name}">Tên sản phẩm</h3>
-                            <p class="price fw-bold text-danger mb-2"
-                               th:text="${#numbers.formatDecimal(product.price,0,'COMMA',0,'POINT')} + ' đ'">
-                                5,000,000 đ
-                            </p>
-                            <button class="btn btn-warning w-100 btn-add">Thêm vào giỏ</button>
+                    <a th:href="@{/details}">
+                        <div class="product-card card h-100"
+                             th:attr="data-name=${product.name}, data-price=${product.price}">
+                            <img th:src="@{${product.imageUrl}}" th:alt="${product.name}" class="card-img-top">
+                            <div class="card-body text-center">
+                                <h3 class="fs-6 mb-1" th:text="${product.name}">Tên sản phẩm</h3>
+                                <p class="price fw-bold text-danger mb-2"
+                                   th:text="${#numbers.formatDecimal(product.price,0,'COMMA',0,'POINT')} + ' đ'">
+                                    5,000,000 đ
+                                </p>
+                                <button class="btn btn-warning w-100 btn-add">Thêm vào giỏ</button>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>

@@ -460,3 +460,18 @@ body {
 
 /* để filter bám trên cùng khi cuộn */
 .filter-box.sticky-top{ top: 76px; }
+
+/*Detail*/
+:root { --brand: #111827; }
+
+.thumb{
+    width:60px; height:60px;
+    object-fit:cover;
+    border-radius:.5rem;
+    border:1px solid transparent;
+    cursor:pointer;
+    background:#fff;
+}
+.thumb.active{ border-color:var(--brand); }
+.price{ color:var(--brand); }
+.rounded-4{ border-radius:1rem !important; }
