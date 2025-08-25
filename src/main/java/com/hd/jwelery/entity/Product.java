@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,9 +14,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
+
+    @Column(unique = true)
+    private String productName;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -27,28 +30,34 @@ public class Product {
     @JoinColumn(name = "collection_id")
     private Collection collection;
 
-    private String productName;
-
     @Column(unique = true)
     private String sku;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String description;
 
-    private BigDecimal price;
-    private BigDecimal costPrice;
+    @Column(nullable = false)
+    private Long price;
+
+    @Column(nullable = false)
     private Integer stockQuantity;
-    private BigDecimal weight;
+
+    @Column(nullable = false)
     private String material;
+
+    @Column(nullable = false)
     private String imageUrl;
 
+    @Column(nullable = false)
     private LocalDateTime createdAt;
+
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews;
 
     @ManyToMany
