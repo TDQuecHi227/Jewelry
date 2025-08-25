@@ -17,4 +17,14 @@ public class CategoryServiceImpl implements CategoryService {
     public Category getCategoryByName(String categoryName) {
         return categoryRepository.findByCategoryName(categoryName);
     }
+
+    @Override
+    public Category save(Category category) {
+        return categoryRepository.save(category);
+    }
+
+    @Override
+    public void delete(Category category) {
+        categoryRepository.delete(category);
+    }
 }
