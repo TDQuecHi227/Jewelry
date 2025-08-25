@@ -6,7 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "promotions")
@@ -31,12 +32,7 @@ public class Promotion{
     @Column(nullable = false)
     private LocalDateTime endDate;
 
-    @ManyToMany
-    @JoinTable(
-            name = "product_promotions",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "promotion_id")
-    )
-    private List<Promotion> promotions;
+    @ManyToMany(mappedBy = "promotions")
+    private Set<Product> products = new HashSet<>();
 }
 
