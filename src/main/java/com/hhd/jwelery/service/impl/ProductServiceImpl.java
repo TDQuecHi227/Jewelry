@@ -1,8 +1,8 @@
-package com.hd.jwelery.service.impl;
+package com.hhd.jwelery.service.impl;
 
-import com.hd.jwelery.entity.Product;
-import com.hd.jwelery.repository.ProductRepository;
-import com.hd.jwelery.service.ProductService;
+import com.hhd.jwelery.entity.Product;
+import com.hhd.jwelery.repository.ProductRepository;
+import com.hhd.jwelery.service.ProductService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
