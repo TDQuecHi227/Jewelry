@@ -53,7 +53,7 @@ public class HomeController {
         model.addAttribute("products", productsWithSale);
         model.addAttribute("days", days);
 
-        return "client/homepage/Home"; // chỉ 1 file
+        return "home"; // chỉ 1 file
     }
     }
 
