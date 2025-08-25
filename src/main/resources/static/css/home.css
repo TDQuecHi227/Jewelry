@@ -482,3 +482,76 @@ a.card-link {
 a.card-link:hover {
     text-decoration: none;
 }
+/* === Detail page polish === */
+
+/* Cột ảnh nhỏ (thumbnail) – bố cục giống PNJ */
+.thumb-list img.thumb{
+    width: 72px;          /* ảnh nhỏ hơn một chút */
+    height: 72px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
+}
+.thumb-list img.thumb:hover{
+    transform: scale(1.02);
+    border-color: #cbd5e1;
+    box-shadow: 0 1px 6px rgba(0,0,0,.06);
+}
+.thumb-list img.thumb.active{
+    border: 2px solid #0d6efd;   /* viền xanh khi được chọn */
+}
+
+/* Ảnh chính: nhỏ gọn, canh giữa, giống layout PNJ */
+#mainImage{
+    max-height: 460px;     /* ↓ nhỏ lại so với mặc định bootstrap img-fluid */
+    width: 100%;
+    object-fit: contain;
+    background: #fff;
+}
+
+/* Giá và nút — style giống PNJ */
+.price{
+    color:#d0021b;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.btn-dark.btn-lg{
+    border-radius: 10px;
+    padding: 10px 16px;
+}
+
+.btn-outline-dark{
+    border-radius: 10px;
+}
+
+.small .text-decoration-none,
+a.text-decoration-none{
+    text-decoration: none;
+}
+
+/* Box cam kết (giao hàng/24-7/đổi trả) cân đối hơn */
+.p-2.bg-white.border.rounded-3.text-center.h-100{
+    min-height: 64px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+}
+
+/* Tabs nội dung nhìn gọn */
+.nav-tabs .nav-link{
+    padding: 10px 14px;
+}
+.tab-content{
+    border-radius: 0 0 .5rem .5rem;
+}
+
+/* Fix khoảng cách tổng thể section */
+section.container.my-4{
+    margin-top: 1.25rem !important;
+    margin-bottom: 1.25rem !important;
+}
