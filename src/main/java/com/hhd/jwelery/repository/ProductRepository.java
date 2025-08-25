@@ -1,6 +1,6 @@
-package com.hd.jwelery.repository;
+package com.hhd.jwelery.repository;
 
-import com.hd.jwelery.entity.Product;
+import com.hhd.jwelery.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
