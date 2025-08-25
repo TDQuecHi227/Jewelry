@@ -1,4 +1,4 @@
-package com.hd.jwelery.entity;
+package com.hhd.jwelery.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,21 +9,23 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "promotions")
+@Table(name = "collections")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Promotion{
-
+public class Collection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long promotionId;
+    private Long collectionId;
 
-    @Column(nullable = false)
-    private Long discountPercentage;
-
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    @Column(nullable = false)
+    private String imageUrl;
 
     @Column(nullable = false)
     private LocalDateTime startDate;
@@ -31,12 +33,6 @@ public class Promotion{
     @Column(nullable = false)
     private LocalDateTime endDate;
 
-    @ManyToMany
-    @JoinTable(
-            name = "product_promotions",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "promotion_id")
-    )
-    private List<Promotion> promotions;
+    @OneToMany(mappedBy = "collection")
+    private List<Product> products;
 }
-

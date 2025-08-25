@@ -1,36 +1,29 @@
-package com.hd.jwelery.entity;
+package com.hhd.jwelery.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "reviews")
+@Table(name = "order_items")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Review{
+public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long reviewId;
+    private Long orderItemId;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "order_id")
+    private Order order;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
-    private Integer rating;
-
-    @Column(columnDefinition = "TEXT")
-    private String comment;
-
     @Column(nullable = false)
-    private LocalDateTime createdAt;
+    private Integer quantity;
 }
