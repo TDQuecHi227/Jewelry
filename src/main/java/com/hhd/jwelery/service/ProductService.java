@@ -13,4 +13,6 @@ public interface ProductService {
     List<Product> getProductsByPriceBetween(Long minPrice, Long maxPrice);
     List<Product> getProductsByStockQuantityGreaterThan(int stock);
     List<Product> getProductsByMaterial(String material);
+    Product save(Product product);
+    void delete(Product product);
 }
