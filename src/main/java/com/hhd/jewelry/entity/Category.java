@@ -1,4 +1,4 @@
-package com.hd.jwelery.entity;
+package com.hhd.jewelry.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,25 +6,25 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@Table(name = "audit_logs")
+@Table(name = "categories")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuditLog {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long logId;
+    private Long categoryId;
 
-    @ManyToOne
-    @JoinColumn(name = "admin_id")
-    private User admin;
-
-    private String action;
+    private String name;
 
     @Column(columnDefinition = "TEXT")
-    private String details;
+    private String description;
 
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "category")
+    private List<Product> products;
 }
