@@ -19,7 +19,7 @@ public class Category {
     private Long categoryId;
 
     @Column(nullable = false, unique = true)
-    private String name;
+    private String categoryName;
 
     @Column(columnDefinition = "TEXT")
     private String description;
