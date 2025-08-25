@@ -21,8 +21,8 @@ public class Category {
     @Column(nullable = false, unique = true)
     private String categoryName;
 
-    @Column(columnDefinition = "TEXT")
-    private String description;
+    @Column(nullable = false)
+    private String imageUrl;
 
     @OneToMany(mappedBy = "category")
     private List<Product> products;
