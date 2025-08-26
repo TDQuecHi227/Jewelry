@@ -70,7 +70,7 @@
 
         <!-- RIGHT GRID -->
         <div class="col-12 col-md-9">
-            <a th:href="/details" class="card-link">
+            <a th:href="@{/details}" class="card-link">
                 <div id="productGrid" class="row row-cols-2 row-cols-md-3 g-3">
                     <div class="col" th:each="p : ${products}">
                         <div class="product-card card h-100"
