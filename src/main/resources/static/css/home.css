@@ -460,3 +460,125 @@ body {
 
 /* để filter bám trên cùng khi cuộn */
 .filter-box.sticky-top{ top: 76px; }
+
+/*!*Detail*!*/
+/*:root { --brand: #111827; }*/
+
+/*.thumb{*/
+/*    width:60px; height:60px;*/
+/*    object-fit:cover;*/
+/*    border-radius:.5rem;*/
+/*    border:1px solid transparent;*/
+/*    cursor:pointer;*/
+/*    background:#fff;*/
+/*}*/
+/*.thumb.active{ border-color:var(--brand); }*/
+/*.price{ color:var(--brand); }*/
+/*.rounded-4{ border-radius:1rem !important; }*/
+a.card-link {
+    text-decoration: none;
+    color: inherit;
+}
+a.card-link:hover {
+    text-decoration: none;
+}
+/* === Detail page polish === */
+
+/* Cột ảnh nhỏ (thumbnail) – bố cục giống PNJ */
+.thumb-list img.thumb{
+    width: 72px;          /* ảnh nhỏ hơn một chút */
+    height: 72px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
+}
+.thumb-list img.thumb:hover{
+    transform: scale(1.02);
+    border-color: #cbd5e1;
+    box-shadow: 0 1px 6px rgba(0,0,0,.06);
+}
+.thumb-list img.thumb.active{
+    border: 2px solid #0d6efd;   /* viền xanh khi được chọn */
+}
+
+/* Ảnh chính: nhỏ gọn, canh giữa, giống layout PNJ */
+#mainImage{
+    max-height: 100%;     /* ↓ nhỏ lại so với mặc định bootstrap img-fluid */
+    width: 100%;
+    object-fit: contain;
+    background: #fff;
+}
+
+/* Giá và nút — style giống PNJ */
+.price{
+    color:#d0021b;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.btn-dark.btn-lg{
+    border-radius: 10px;
+    padding: 10px 16px;
+}
+
+.btn-outline-dark{
+    border-radius: 10px;
+}
+
+.small .text-decoration-none,
+a.text-decoration-none{
+    text-decoration: none;
+}
+
+/* Box cam kết (giao hàng/24-7/đổi trả) cân đối hơn */
+.p-2.bg-white.border.rounded-3.text-center.h-100{
+    min-height: 64px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+}
+
+/* Tabs nội dung nhìn gọn */
+.nav-tabs .nav-link{
+    padding: 10px 14px;
+}
+.tab-content{
+    border-radius: 0 0 .5rem .5rem;
+}
+
+/* Fix khoảng cách tổng thể section */
+section.container.my-4{
+    margin-top: 1.25rem !important;
+    margin-bottom: 1.25rem !important;
+}
+.btn-buy-now {
+    background: linear-gradient(to bottom, #ffd75a, #ffc107); /* vàng nhạt → vàng đậm */
+    color: #212529;          /* chữ tối, giống btn-warning */
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+}
+.btn-buy-now:hover{
+    background: linear-gradient(to bottom, #ffd75a, #e5ad06); /* vàng nhạt → vàng đậm */
+}
+.btn-buy-now .title {
+    font-weight: 700;
+    font-size: 1rem;       /* chữ to hơn */
+    line-height: 1.2;
+}
+
+.btn-buy-now .sub {
+    font-size: 0.8rem;     /* nhỏ hơn */
+    font-weight: 500;
+    text-transform: none;  /* giữ thường */
+    margin-top: 2px;
+}

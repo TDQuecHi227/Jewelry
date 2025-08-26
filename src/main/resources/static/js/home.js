@@ -200,3 +200,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // first run
     filter();
 });
+// === Detail page: gallery behavior ===
+document.addEventListener('DOMContentLoaded', () => {
+    const thumbs = document.querySelectorAll('.thumb-list img.thumb');
+    const main   = document.getElementById('mainImage');
+    if (!thumbs.length || !main) return;
+
+    // set active cho thumb đầu
+    thumbs.forEach(t => t.classList.remove('active'));
+    thumbs[0].classList.add('active');
+
+    // click đổi ảnh chính + active viền
+    thumbs.forEach(img => {
+        img.addEventListener('click', () => {
+            thumbs.forEach(i => i.classList.remove('active'));
+            img.classList.add('active');
+            main.src = img.currentSrc || img.src;   // dùng currentSrc nếu có srcset
+            main.alt = img.alt || 'main';
+        });
+    });
+});
+
+
