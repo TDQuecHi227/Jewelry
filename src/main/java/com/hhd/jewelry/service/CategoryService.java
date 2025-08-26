@@ -1,6 +1,6 @@
-package com.hhd.jwelery.service;
+package com.hhd.jewelry.service;
 
-import com.hhd.jwelery.entity.Category;
+import com.hhd.jewelry.entity.Category;
 
 public interface CategoryService {
     Category getCategoryByName(String categoryName);

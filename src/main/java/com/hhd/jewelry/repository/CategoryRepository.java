@@ -1,6 +1,6 @@
-package com.hhd.jwelery.repository;
+package com.hhd.jewelry.repository;
 
-import com.hhd.jwelery.entity.Category;
+import com.hhd.jewelry.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {

@@ -1,6 +1,6 @@
-package com.hhd.jwelery.repository;
+package com.hhd.jewelry.repository;
 
-import com.hhd.jwelery.entity.Review;
+import com.hhd.jewelry.entity.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ReviewRepository extends JpaRepository<Review, Long>{

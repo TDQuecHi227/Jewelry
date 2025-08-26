@@ -1,4 +1,4 @@
-package com.hhd.jwelery.entity;
+package com.hhd.jewelry.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

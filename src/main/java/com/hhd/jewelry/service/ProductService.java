@@ -1,6 +1,6 @@
-package com.hhd.jwelery.service;
+package com.hhd.jewelry.service;
 
-import com.hhd.jwelery.entity.Product;
+import com.hhd.jewelry.entity.Product;
 
 import java.util.List;
 
