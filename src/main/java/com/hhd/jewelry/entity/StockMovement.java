@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StockMovement {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long movementId;
@@ -29,6 +30,7 @@ public class StockMovement {
     @Column(columnDefinition = "TEXT")
     private String note;
 
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     public enum ChangeType {

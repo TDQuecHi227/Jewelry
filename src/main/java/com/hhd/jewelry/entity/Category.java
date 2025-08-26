@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -14,16 +13,16 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Category {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categoryId;
 
-    private String name;
+    @Column(nullable = false, unique = true)
+    private String categoryName;
 
-    @Column(columnDefinition = "TEXT")
-    private String description;
-
-    private LocalDateTime createdAt;
+    @Column(nullable = false)
+    private String imageUrl;
 
     @OneToMany(mappedBy = "category")
     private List<Product> products;

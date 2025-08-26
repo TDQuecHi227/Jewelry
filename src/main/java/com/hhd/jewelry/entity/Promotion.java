@@ -5,32 +5,34 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "promotions")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Promotion {
+public class Promotion{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long promotionId;
 
+    @Column(nullable = false)
     private Long discountPercentage;
 
-    private LocalDate startDate;
+    @Column(nullable = false)
+    private String name;
 
-    private LocalDate endDate;
+    @Column(nullable = false)
+    private LocalDateTime startDate;
 
-    @ManyToMany
-    @JoinTable(
-            name = "product_promotions",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "promotion_id")
-    )
-    private List<Promotion> promotions;
+    @Column(nullable = false)
+    private LocalDateTime endDate;
 
+    @ManyToMany(mappedBy = "promotions")
+    private Set<Product> products = new HashSet<>();
 }
 

@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Review {
+public class Review{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
@@ -30,5 +31,6 @@ public class Review {
     @Column(columnDefinition = "TEXT")
     private String comment;
 
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 }
