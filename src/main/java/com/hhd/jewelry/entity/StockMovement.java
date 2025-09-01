@@ -13,10 +13,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StockMovement {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long movementId;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

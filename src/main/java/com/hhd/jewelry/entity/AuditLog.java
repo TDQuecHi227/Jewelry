@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuditLog {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long logId;

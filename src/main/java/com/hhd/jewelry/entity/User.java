@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,16 +15,24 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Integer id;
 
     @Column(nullable = false)
-    private String fullName;
+    private String fullname;
 
     @Column(unique = true)
     private String phone;
+
+    @Column(unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String gender;
+
+    @Column(nullable = false)
+    private LocalDate dateOfBirth;
 
     @Column(columnDefinition = "TEXT")
     private String address;
@@ -37,14 +46,8 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
-
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
-
-    @OneToMany(mappedBy = "user")
-    private List<Review> reviews;
 
     public enum Role {
         USER, ADMIN

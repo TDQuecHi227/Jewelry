@@ -4,11 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "products")
@@ -16,54 +14,55 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productId;
+    private Integer id;
 
-    @Column(unique = true)
+    @Column(nullable = false)
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    @ManyToOne
-    @JoinColumn(name = "collection_id")
-    private Collection collection;
-
-    @Column(columnDefinition = "TEXT", nullable = false)
-    private String description;
-
-    @Column(nullable = false)
-    private Long price;
-
-    @Column(nullable = false)
-    private Integer stockQuantity;
+    private String gemstone;
 
     @Column(nullable = false)
     private String material;
 
     @Column(nullable = false)
-    private String imageUrl;
+    private String brand;
+
+    @Column(nullable = false, unique = true)
+    private String serialNumber;
 
     @Column(nullable = false)
-    private LocalDateTime createdAt;
+    private Integer price;
+
+    @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
+    private Integer discount;
+
+    @Column(name = "`order`", columnDefinition = "INT DEFAULT 0")
+    private Integer order;
 
     @Column(nullable = false)
-    private LocalDateTime updatedAt;
+    private String gender;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    @ToString.Exclude
+    private Category category;
+
+    @ManyToOne
+    @JoinColumn(name = "collection_id")
+    @ToString.Exclude
+    private Collection collection;
+
+    @Column(nullable = false)
+    private Integer stockQuantity;
+
+    @ElementCollection
+    @CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))
+    @Column(name = "image_url")
+    private List<String> imageUrls = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
     private List<OrderItem> orderItems;
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Review> reviews;
-
-    @ManyToMany
-    @JoinTable(
-            name = "product_promotions",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "promotion_id")
-    )
-    private Set<Promotion> promotions = new HashSet<>();
 }
