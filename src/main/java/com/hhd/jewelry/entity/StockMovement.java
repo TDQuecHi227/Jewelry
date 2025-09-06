@@ -32,6 +32,10 @@ public class StockMovement {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    @ManyToOne
+    @JoinColumn(name = "vendor_id")
+    private Vendor vendor;
+
     public enum ChangeType {
         IMPORT, SALE, ADJUSTMENT
     }

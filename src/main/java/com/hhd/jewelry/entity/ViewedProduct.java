@@ -5,18 +5,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "reviews")
+@Table(name = "viewed_products")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Review{
-
+public class ViewedProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long reviewId;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -25,12 +22,4 @@ public class Review{
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
-
-    private Integer rating;
-
-    @Column(columnDefinition = "TEXT")
-    private String comment;
-
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
 }
