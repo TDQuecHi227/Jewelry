@@ -28,7 +28,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getProductsByCategoryName(String categoryName) {
-        return productRepository.findAllByCategory_CategoryName(categoryName);
+        return productRepository.findAllByCategory_Name(categoryName);
     }
 
     @Override
@@ -38,11 +38,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getProductsByCategoryNameAndCollectionName(String categoryName, String collectionName) {
-        return productRepository.findAllByCategory_CategoryNameAndCollection_Name(categoryName, collectionName);
+        return productRepository.findAllByCategory_NameAndCollection_Name(categoryName, collectionName);
     }
 
     @Override
-    public List<Product> getProductsByPriceBetween(Long minPrice, Long maxPrice) {
+    public List<Product> getProductsByPriceBetween(Integer minPrice, Integer maxPrice) {
         return productRepository.findAllByPriceBetween(minPrice, maxPrice);
     }
 
