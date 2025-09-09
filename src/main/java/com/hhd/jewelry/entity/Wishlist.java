@@ -6,22 +6,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "audit_logs")
+@Table(name = "wishlist")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuditLog {
+public class Wishlist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long logId;
+    private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "admin_id")
-    private User admin;
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @Column(nullable = false)
-    private String action;
-
-    @Column(columnDefinition = "TEXT")
-    private String details;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 }
+

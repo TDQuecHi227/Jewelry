@@ -1,4 +1,4 @@
-package config;
+package com.hhd.jewelry.config;
 
 import com.hhd.jewelry.entity.Category;
 import com.hhd.jewelry.service.CategoryService;

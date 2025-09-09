@@ -13,10 +13,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StockMovement {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long movementId;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
@@ -32,6 +31,10 @@ public class StockMovement {
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "vendor_id")
+    private Vendor vendor;
 
     public enum ChangeType {
         IMPORT, SALE, ADJUSTMENT

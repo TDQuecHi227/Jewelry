@@ -5,34 +5,35 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
-@Table(name = "promotions")
+@Table(name = "vendor_budgets")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Promotion{
-
+public class VendorBudget {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long promotionId;
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "vendor_id", nullable = false)
+    private Vendor vendor;
 
     @Column(nullable = false)
-    private Long discountPercentage;
+    private BigDecimal revenue;
 
     @Column(nullable = false)
-    private String name;
+    private BigDecimal expense;
 
     @Column(nullable = false)
-    private LocalDateTime startDate;
+    private BigDecimal profit;
 
     @Column(nullable = false)
-    private LocalDateTime endDate;
+    private LocalDateTime createdAt;
 
-    @ManyToMany(mappedBy = "promotions")
-    private Set<Product> products = new HashSet<>();
+    @Column(columnDefinition = "TEXT")
+    private String note;
 }
-

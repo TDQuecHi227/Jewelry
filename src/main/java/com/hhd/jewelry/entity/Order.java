@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,10 +15,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderId;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -26,24 +26,16 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private Status status = Status.PENDING;
 
-    @Column(nullable = false)
-    private Long subtotalPrice;
-
-    private Long discountAmount;
-
-    @Column(nullable = false)
-    private Long totalPrice;
-
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
-
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderItem> orderItems;
+    private List<OrderItem> items;
+
+    public enum ShippingMethod {
+        DELIVERY, STORE_PICKUP
+    }
 
     public enum Status {
-        PENDING, PAID, SHIPPED, COMPLETED, CANCELED
+        PENDING, PAID, SHIPPING, COMPLETED, CANCELLED
     }
 }
