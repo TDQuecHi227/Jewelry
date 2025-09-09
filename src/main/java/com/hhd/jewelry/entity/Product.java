@@ -1,10 +1,7 @@
 package com.hhd.jewelry.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.*;
 
@@ -13,6 +10,7 @@ import java.util.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,7 +55,8 @@ public class Product {
     @Column(nullable = false)
     private Integer stockQuantity;
 
-    @ElementCollection
+    @Builder.Default
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "product_images", joinColumns = @JoinColumn(name = "product_id"))
     @Column(name = "image_url")
     private List<String> imageUrls = new ArrayList<>();
@@ -65,4 +64,10 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<OrderItem> orderItems;
+
+    @PrePersist
+    private void prePersist() {
+        if (discount == null) discount = 0;
+        if (order == null) order = 0;
+    }
 }
