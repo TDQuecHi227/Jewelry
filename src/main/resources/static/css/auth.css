@@ -1,0 +1,146 @@
+:root {
+    --bg1: #0b1220;
+    --bg2: #111827;
+    --card: #0f172a;
+    --border: #1f2937;
+    --fg: #e5e7eb;
+    --muted: #94a3b8;
+    --accent: #ffd700;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+    color: var(--fg);
+    background:
+            radial-gradient(1200px 700px at 80% -10%, #1f2937 0%, transparent 60%),
+            radial-gradient(800px 500px at 0% 100%, #1e293b 0%, transparent 60%),
+            linear-gradient(180deg, var(--bg1), var(--bg2));
+}
+
+.login-wrap {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 460px;
+    background: rgba(17, 24, 39, 0.85);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+    backdrop-filter: blur(6px);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.brand img {
+    height: 40px;
+}
+
+.brand-name {
+    font-weight: 700;
+    letter-spacing: .3px;
+}
+
+.subtle {
+    color: var(--muted);
+    font-size: .95rem;
+}
+
+.form-label {
+    color: #cbd5e1;
+    font-weight: 600;
+}
+
+.form-control {
+    background: #0b1324;
+    border: 1px solid #22304a;
+    color: var(--fg);
+}
+
+.form-control:focus {
+    border-color: #365485;
+    box-shadow: 0 0 0 .2rem rgba(54, 84, 133, .25);
+}
+
+.btn-gold {
+    background: linear-gradient(180deg, #ffe26e, var(--accent));
+    color: #1a1a1a;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    transition: transform .05s ease-in-out, box-shadow .2s;
+}
+
+.btn-gold:hover {
+    box-shadow: 0 8px 18px rgba(255, 215, 0, .25);
+}
+
+.btn-gold:active {
+    transform: translateY(1px);
+}
+
+.btn-ghost {
+    border-radius: 12px;
+}
+
+.toggle-pass {
+    cursor: pointer;
+    user-select: none;
+    font-size: .95rem;
+    color: #cbd5e1;
+}
+
+.links a {
+    color: #93c5fd;
+    text-decoration: none;
+}
+
+.links a:hover {
+    text-decoration: underline;
+}
+
+.divider {
+    text-align: center;
+    color: var(--muted);
+    margin: 16px 0;
+    position: relative;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background: #22304a;
+}
+
+.divider::before {
+    left: 0;
+}
+
+.divider::after {
+    right: 0;
+}
+
+.alert-soft {
+    background: rgba(220, 38, 38, .12);
+    border: 1px solid rgba(248, 113, 113, .35);
+    color: #fecaca;
+}

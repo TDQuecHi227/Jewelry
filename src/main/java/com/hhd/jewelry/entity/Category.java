@@ -27,4 +27,5 @@ public class Category {
     @OneToMany(mappedBy = "category")
     @ToString.Exclude
     private List<Product> products;
+
 }
