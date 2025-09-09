@@ -49,7 +49,11 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
+    @ManyToOne
+    @JoinColumn(name = "managed_by")
+    private Vendor manager;
+
     public enum Role {
-        USER, ADMIN
+        USER, ADMIN, SHIPPER, VENDOR, GUEST
     }
 }
