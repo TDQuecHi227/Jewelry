@@ -70,15 +70,15 @@
 
         <!-- RIGHT GRID -->
         <div class="col-12 col-md-9">
-            <a th:href="@{/details}" class="card-link" >
                 <div id="productGrid" class="row row-cols-2 row-cols-md-3 g-3">
                     <div class="col" th:each="p : ${products}">
                         <div class="product-card card h-100"
                              th:attr="data-name=${p['name']},
                     data-price=${p['salePrice'] ?: p['price']},
                     data-cat=${p['category'] ?: ''}">
-                            <img th:src="@{${p['imageUrl']}}" th:alt="${p['name']}" class="card-img-top">
-
+                            <a th:href="@{/details}" class="card-link" >
+                                <img th:src="@{${p['imageUrl']}}" th:alt="${p['name']}" class="card-img-top">
+                            </a>
                             <div class="card-body text-center">
                                 <h3 class="fs-6 mb-1" th:text="${p['name']}">Tên sản phẩm</h3>
 
@@ -102,14 +102,13 @@
                                 <!-- Hàng 2: Giá gốc (chỉ hiện khi có sale) -->
                                 <div class="text-muted text-decoration-line-through small mb-2"
                                      th:if="${p['oldPrice'] != null}"
-                                     th:text="${#numbers.formatDecimal(p['oldPrice'],0,'COMMA',0,'POINT')} + ' đ'">15.000.000 đ</div>
-
+                                     th:text="${#numbers.formatDecimal(p['oldPrice'],0,'COMMA',0,'POINT')} + ' đ'">15.000.000 đ
+                                </div>
                                 <button class="btn btn-warning w-100 btn-add">Thêm vào giỏ</button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </a>
         </div>
 
     </div>
