@@ -28,27 +28,4 @@ public class Category {
     @ToString.Exclude
     private List<Product> products;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getCategoryName() {
-        return name;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.name = categoryName;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
 }
