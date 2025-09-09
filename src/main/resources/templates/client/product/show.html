@@ -30,7 +30,7 @@
                     <input id="q" type="text" class="form-control" placeholder="Nhẫn, Vòng tay, ...">
                 </div>
 
-                <!-- Category -->
+                <!-- Category (tĩnh hoặc bạn có thể thay bằng loop từ Category) -->
                 <div class="mb-3">
                     <label class="form-label">Danh mục</label>
                     <div class="form-check"><input class="form-check-input" type="checkbox" name="cat" value="nhẫn" id="c1"><label class="form-check-label" for="c1">Nhẫn</label></div>
@@ -70,45 +70,57 @@
 
         <!-- RIGHT GRID -->
         <div class="col-12 col-md-9">
-                <div id="productGrid" class="row row-cols-2 row-cols-md-3 g-3">
-                    <div class="col" th:each="p : ${products}">
-                        <div class="product-card card h-100"
-                             th:attr="data-name=${p['name']},
-                    data-price=${p['salePrice'] ?: p['price']},
-                    data-cat=${p['category'] ?: ''}">
-                            <a th:href="@{/details}" class="card-link" >
-                                <img th:src="@{${p['imageUrl']}}" th:alt="${p['name']}" class="card-img-top">
-                            </a>
-                            <div class="card-body text-center">
-                                <h3 class="fs-6 mb-1" th:text="${p['name']}">Tên sản phẩm</h3>
+            <div id="productGrid" class="row row-cols-2 row-cols-md-3 g-3">
+                <!-- p là Product -->
+                <div class="col" th:each="p : ${products}"
+                     th:with="
+                        d=${p.discount != null ? p.discount : 0},
+                        salePrice=${(p.price * (100 - d)) / 100},
+                        hasDiscount=${d > 0},
+                        mainImage=${#lists.isEmpty(p.imageUrls) ? '/images/placeholder.jpg' : p.imageUrls[0]},
+                        catName=${p.category != null ? (p.category.name != null ? p.category.name : '') : ''},
+                        effectivePrice=${hasDiscount ? salePrice : p.price}
+                     ">
+                    <div class="product-card card h-100"
+                         th:attr="data-name=${p.name},
+                                  data-price=${effectivePrice},
+                                  data-cat=${#strings.toLowerCase(catName)}">
+                        <a th:href="@{/details/{serialnumber}(serialnumber=${p.serialNumber})}" class="card-link">
+                            <img th:src="@{${mainImage}}" th:alt="${p.name}" class="card-img-top">
+                        </a>
 
-                                <!-- Mô tả (nếu có) -->
-                                <p class="text-muted small mb-2"
-                                   th:if="${p['description'] != null}"
-                                   th:text="${p['description']}">Mô tả ngắn…</p>
+                        <div class="card-body text-center">
+                            <h3 class="fs-6 mb-1" th:text="${p.getDisplayName()}">Tên sản phẩm</h3>
 
-                                <!-- Hàng 1: Giá SALE + % (nếu có sale thì hiện, ngược lại chỉ hiện giá thường) -->
-                                <div class="d-flex align-items-baseline justify-content-center gap-2 mb-1">
-            <span class="h5 text-danger fw-bold"
-                  th:text="${#numbers.formatDecimal(p['salePrice'] ?: p['price'],0,'COMMA',0,'POINT')} + ' đ'">
-              13.950.000 đ
-            </span>
+                            <!-- Hàng 1: Giá hiện tại + % giảm -->
+                            <div class="d-flex align-items-baseline justify-content-center gap-2 mb-1">
+                                <span class="h5 text-danger fw-bold"
+                                      th:text="${#numbers.formatDecimal(effectivePrice,0,'COMMA',0,'POINT')} + ' đ'">
+                                  0 đ
+                                </span>
 
-                                    <span class="badge rounded-pill bg-warning text-dark fw-semibold"
-                                          th:if="${p['discountPercent'] != null}"
-                                          th:text="'-' + ${p['discountPercent']} + '%'">-8%</span>
-                                </div>
-
-                                <!-- Hàng 2: Giá gốc (chỉ hiện khi có sale) -->
-                                <div class="text-muted text-decoration-line-through small mb-2"
-                                     th:if="${p['oldPrice'] != null}"
-                                     th:text="${#numbers.formatDecimal(p['oldPrice'],0,'COMMA',0,'POINT')} + ' đ'">15.000.000 đ
-                                </div>
-                                <button class="btn btn-warning w-100 btn-add">Thêm vào giỏ</button>
+                                <span class="badge rounded-pill bg-warning text-dark fw-semibold"
+                                      th:if="${hasDiscount}"
+                                      th:text="'-' + ${d} + '%'">-0%</span>
                             </div>
+
+                            <!-- Hàng 2: Giá gốc (chỉ hiện khi có sale) -->
+                            <div class="text-muted text-decoration-line-through small mb-2"
+                                 th:if="${hasDiscount}"
+                                 th:text="${#numbers.formatDecimal(p.price,0,'COMMA',0,'POINT')} + ' đ'">0 đ
+                            </div>
+
+                            <button type="button"
+                                    class="btn btn-warning w-100 btn-add"
+                                    th:attr="data-id=${p.id},
+                                             data-name=${p.name},
+                                             data-price=${effectivePrice}">
+                                Thêm vào giỏ
+                            </button>
                         </div>
                     </div>
                 </div>
+            </div>
         </div>
 
     </div>

@@ -3,64 +3,79 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title th:text="${product != null ? product.name : 'PNJ - Nhẫn cưới nam | UI Demo'}">PNJ - Nhẫn cưới nam | UI Demo</title>
+    <title th:text="${product != null ? product.name : 'PNJ - Chi tiết sản phẩm'}">PNJ - Chi tiết sản phẩm</title>
 
     <!-- Bootstrap + Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- App styles & scripts -->
+    <!-- App styles -->
     <link rel="stylesheet" th:href="@{/css/home.css}">
-
 </head>
 <body class="bg-white">
 
 <header th:replace="client/layout/header :: header"></header>
 
 <!-- PRODUCT -->
-<section class="container my-4">
+<section class="container my-4"
+         th:with="
+            d=${product != null && product.discount != null ? product.discount : 0},
+            hasDiscount=${d > 0},
+            effectivePrice=${hasDiscount ? (product.price * (100 - d)) / 100 : product.price},
+            imgs=${product != null && !#lists.isEmpty(product.imageUrls) ? product.imageUrls : '/images/placeholder.jpg'},
+            mainImage=${imgs[0]},
+            monthly=${effectivePrice / 12}
+         ">
     <div class="row g-3">
         <!-- THUMBNAILS -->
         <div class="col-12 col-md-1 order-2 order-md-1">
             <div class="d-flex d-md-block gap-2 thumb-list">
-                <!-- Dùng product.images nếu có, không thì dùng danh sách mặc định -->
-                <th:block th:with="imgs=${product.images}">
-                    <img class="thumb"
-                         th:each="img,idx : ${imgs}"
-                         th:src="${img}"
-                         th:alt="'thumb' + ${idx.index + 1}"
-                         loading="lazy">
-                </th:block>
+                <img class="thumb"
+                     th:each="img,idx : ${imgs}"
+                     th:src="${img}"
+                     th:alt="'thumb ' + ${idx.index + 1}"
+                     loading="lazy">
             </div>
         </div>
 
         <!-- MAIN IMAGE -->
         <div class="col-12 col-md-5 order-1 order-md-2 ps-md-4">
-            <div class="bg-white p-2 rounded-4 h-100 d-flex align-items-center justify-content-center">
+            <div class="bg-white p-2 rounded-4 h-100 d-flex align-items-center justify-content-center border">
                 <img id="mainImage" class="img-fluid rounded-3"
-                     th:src="${product.images[0]}"
+                     th:src="${mainImage}"
                      alt="main">
             </div>
         </div>
 
         <!-- RIGHT PANEL -->
         <div class="col-12 col-md-6 order-3">
-            <h1 class="h5 mb-1" th:text="${product.name}">Nhẫn ...</h1>
-            <div class="text-muted small mb-2" th:text="${product.sku}">XMXMW006385</div>
-
-            <div class="d-flex align-items-center gap-2 mb-2 text-warning">
-                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i>
-                <span class="small text-muted" th:text="${'(' + product.sold + ' đã bán)'}">(6 đã bán)</span>
+            <h1 class="h5 mb-1" th:text="${product.getDisplayName()}">Tên sản phẩm</h1>
+            <div class="text-muted small mb-2">
+                Mã SP:
+                <span class="fw-semibold" th:text="${product.serialNumber}">SERIAL-001</span>
             </div>
 
-            <div class="price fs-3 fw-bold mb-1"
-                 th:text="${#numbers.formatDecimal(product.price, 0, 'POINT', 0, 'COMMA') + ' ₫'}">
-                5.356.000 ₫
+            <!-- Giá hiện tại + badge giảm -->
+            <div class="d-flex align-items-baseline gap-2 mb-1">
+                <div class="price fs-3 fw-bold"
+                     th:text="${#numbers.formatDecimal(effectivePrice, 0, 'POINT', 0, 'COMMA')} + ' ₫'">
+                    0 ₫
+                </div>
+                <span class="badge rounded-pill bg-warning text-dark fw-semibold"
+                      th:if="${hasDiscount}"
+                      th:text="'-' + ${d} + '%'">-0%</span>
             </div>
+
+            <!-- Giá gốc (gạch ngang) -->
+            <div class="small text-secondary mb-2 text-decoration-line-through"
+                 th:if="${hasDiscount}"
+                 th:text="${#numbers.formatDecimal(product.price, 0, 'POINT', 0, 'COMMA')} + ' đ'">
+                0 đ
+            </div>
+
+            <!-- Trả góp/tháng (tính nhanh 12 tháng) -->
             <div class="small text-secondary mb-3">
-                Chỉ cần trả
-                <strong th:text="${product.monthlyPayment + ' ₫/tháng'}">447.584 ₫/tháng</strong>
+                Chỉ cần trả <strong th:text="${#numbers.formatDecimal(monthly, 0, 'POINT', 0, 'COMMA')} + ' đ/tháng'">0 đ/tháng</strong>
             </div>
 
             <div class="mb-3">
@@ -101,20 +116,22 @@
                 </div>
             </div>
 
-            <div class="d-flex flex-column flex-md-row align-items-stretch justify-content-around">
+            <div class="d-flex flex-column flex-md-row align-items-stretch justify-content-around gap-2">
                 <button class="btn btn-outline-warning">
                     <span class="sub">Thêm vào giỏ</span>
                 </button>
-                <button class="btn btn-buy-now btn-lg rounded-3">
-                    <span class="title">MUA NGAY</span>
-                    <span class="sub">Giao nhanh từ 2 giờ hoặc nhận tại cửa hàng</span>
+                <button class="btn btn-warning btn-lg rounded-3 text-dark">
+                    <span class="title fw-semibold">MUA NGAY</span>
+                    <span class="sub d-block small">Giao nhanh từ 2 giờ hoặc nhận tại cửa hàng</span>
                 </button>
                 <button class="btn btn-outline-primary">
-                    <span class="sub">Trả góp 0%</span> </button>
+                    <span class="sub">Trả góp 0%</span>
+                </button>
             </div>
 
-            <div class="small text-muted">
-                <i class="bi bi-geo-alt"></i> Xem Cửa Hàng Còn Hàng
+            <div class="small text-muted mt-2">
+                <i class="bi bi-geo-alt"></i>
+                <span th:text="${'Còn ' + product.stockQuantity + ' sản phẩm trong kho'}">Còn hàng</span>
             </div>
         </div>
     </div>
@@ -143,10 +160,11 @@
         </div>
         <div id="desc" class="tab-pane fade">
             <table class="table table-sm w-auto">
-                <tr><td>Chất liệu</td><td th:text="${product.material}">Vàng trắng 10K</td></tr>
-                <tr><td>Loại đá</td><td th:text="${product.stone}">ECZ (Xoàn mỹ)</td></tr>
-                <tr><td>Giới tính</td><td th:text="${product.gender}">Nam</td></tr>
-                <tr><td>Thương hiệu</td><td th:text="${product.brand}">PNJ</td></tr>
+                <tr><td>Chất liệu</td><td th:text="${product.material}">—</td></tr>
+                <tr><td>Loại đá</td><td th:text="${product.gemstone}">—</td></tr>
+                <tr><td>Giới tính</td><td th:text="${product.gender}">—</td></tr>
+                <tr><td>Thương hiệu</td><td th:text="${product.brand}">—</td></tr>
+                <tr><td>Mã sản phẩm</td><td th:text="${product.serialNumber}">—</td></tr>
             </table>
         </div>
         <div id="faq" class="tab-pane fade">

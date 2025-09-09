@@ -70,4 +70,7 @@ public class Product {
         if (discount == null) discount = 0;
         if (order == null) order = 0;
     }
+    public String getDisplayName(){
+        return name + " " + (gemstone != null ? gemstone : "") + " " + material + " " + brand + " " + serialNumber;
+    }
 }
