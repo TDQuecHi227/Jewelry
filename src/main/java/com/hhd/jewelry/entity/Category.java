@@ -16,11 +16,10 @@ import java.util.List;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
     private Integer id;
 
     @Column(nullable = false, unique = true)
-    private String categoryName;
+    private String name;
 
     @Column(nullable = false)
     private String imageUrl;
@@ -38,11 +37,11 @@ public class Category {
     }
 
     public String getCategoryName() {
-        return categoryName;
+        return name;
     }
 
     public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+        this.name = categoryName;
     }
 
     public String getImageUrl() {
