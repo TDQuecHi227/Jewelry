@@ -16,10 +16,11 @@ import java.util.List;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "category_id")
     private Integer id;
 
     @Column(nullable = false, unique = true)
-    private String name;
+    private String categoryName;
 
     @Column(nullable = false)
     private String imageUrl;
@@ -27,4 +28,28 @@ public class Category {
     @OneToMany(mappedBy = "category")
     @ToString.Exclude
     private List<Product> products;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }
