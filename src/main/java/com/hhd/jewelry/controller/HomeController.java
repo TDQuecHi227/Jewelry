@@ -1,5 +1,10 @@
 package com.hhd.jewelry.controller;
 
+import com.hhd.jewelry.entity.Category;
+import com.hhd.jewelry.entity.Product;
+import com.hhd.jewelry.service.CategoryService;
+import com.hhd.jewelry.service.ProductService;
+import lombok.RequiredArgsConstructor;
 import com.hhd.jewelry.DTO.ProfileDto;
 import com.hhd.jewelry.entity.User;
 import com.hhd.jewelry.repository.UserRepository;
@@ -20,57 +25,23 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Controller
+@RequiredArgsConstructor
 public class HomeController {
 
+    private final ProductService productService;
+    private final CategoryService categoryService;
     private final UserRepository userRepository;
-
-    public HomeController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @GetMapping("/")
     public String home(Model model) {
-        List<Map<String, Object>> products = List.of(
-                Map.of("name", "Nhẫn Kim Cương", "price", 15000000, "imageUrl", "/images/category/Nhan.jpg"),
-                Map.of("name", "Vòng Tay Vàng", "price", 12000000, "imageUrl", "/images/category/TrangSucBac.jpg"),
-                Map.of("name", "Dây Chuyền Bạc", "price", 2500000, "imageUrl", "/images/category/DayChuyen.jpg"),
-                Map.of("name", "Bông Tai Ngọc Trai", "price", 3500000, "imageUrl", "/images/category/BongTai.jpg")
-        );
+        List<Product> products = productService.getAllProducts();
+        List<Category> categories = categoryService.getAllCategories();
 
-        // Tạo list mới có thêm salePrice và discount
-        Random random = new Random();
-        List<Map<String, Object>> productsWithSale = new ArrayList<>();
-        for (Map<String, Object> p : products) {
-            int oldPrice = (int) p.get("price");
-            int discountPercent = 5 + random.nextInt(6); // 5 → 10
-            int newPrice = oldPrice - (oldPrice * discountPercent / 100);
+        model.addAttribute("products", products);
+        model.addAttribute("categories", categories);
 
-            Map<String, Object> newP = new HashMap<>(p);
-            newP.put("oldPrice", oldPrice);
-            newP.put("salePrice", newPrice);
-            newP.put("discountPercent", discountPercent);
-            productsWithSale.add(newP);
-        }
-        // Danh sách ngày flash sale
-        LocalDate start = LocalDate.now();
-        List<Map<String, Object>> days = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
-            LocalDate date = start.plusDays(i);
-            LocalDateTime time = date.atTime(12, 0);
+        return "client/homepage/home";
 
-            Map<String, Object> item = new HashMap<>();
-            item.put("label", time.format(DateTimeFormatter.ofPattern("dd/MM")));
-            item.put("datetime", time.toString());
-            item.put("today", i == 0);
-            days.add(item);
-        }
-        List<Map<String,Object>> flashDays = days.subList(0, Math.min(5, days.size()));
-        model.addAttribute("flashDays", flashDays);
-        model.addAttribute("products", productsWithSale);
-        model.addAttribute("days", days);
-
-        return "client/homepage/home"; // chỉ 1 file
-    }
     @GetMapping("/account")
     public String getAccountPage(Authentication auth, Model model) {
         User u = userRepository.findByEmail(auth.getName()).orElseThrow();
@@ -118,6 +89,6 @@ public class HomeController {
         ra.addFlashAttribute("saved", "Cập nhật thông tin thành công.");
         return "redirect:/account";
     }
-    }
+}
 
 
