@@ -15,12 +15,11 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class DetailProductController {
     private final ProductService productService;
-
+  
     @GetMapping("/details/{serialNumber}")
     public String productDetail(@PathVariable String serialNumber, Model model) {
         Product product = productService.getProductBySerialNumber(serialNumber);
         model.addAttribute("product", product);
         return "client/product/detail";
     }
-
 }
