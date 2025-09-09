@@ -39,7 +39,7 @@
         </div>
 
         <!-- MAIN IMAGE -->
-        <div class="col-12 col-md-5 order-1 order-md-2 ps-md-4">
+        <div class="col-12 col-md-6 order-1 order-md-2 ps-md-4">
             <div class="bg-white p-2 rounded-4 h-100 d-flex align-items-center justify-content-center border">
                 <img id="mainImage" class="img-fluid rounded-3"
                      th:src="${mainImage}"
@@ -48,7 +48,7 @@
         </div>
 
         <!-- RIGHT PANEL -->
-        <div class="col-12 col-md-6 order-3">
+        <div class="col-12 col-md-5 order-3">
             <h1 class="h5 mb-1" th:text="${product.getDisplayName()}">Tên sản phẩm</h1>
             <div class="text-muted small mb-2">
                 Mã SP:
@@ -116,18 +116,27 @@
                 </div>
             </div>
 
-            <div class="d-flex flex-column flex-md-row align-items-stretch justify-content-around gap-2">
-                <button class="btn btn-outline-warning">
-                    <span class="sub">Thêm vào giỏ</span>
+            <div class="d-flex flex-column gap-2">
+
+                <!-- Mua ngay -->
+                <button class="btn btn-warning fw-semibold rounded-3 py-2">
+                    Mua ngay <br>
+                    <small class="fst-italic fw-normal">(Giao hàng miễn phí tận nhà hoặc nhận tại cửa hàng)</small>
                 </button>
-                <button class="btn btn-warning btn-lg rounded-3 text-dark">
-                    <span class="title fw-semibold">MUA NGAY</span>
-                    <span class="sub d-block small">Giao nhanh từ 2 giờ hoặc nhận tại cửa hàng</span>
-                </button>
-                <button class="btn btn-outline-primary">
-                    <span class="sub">Trả góp 0%</span>
-                </button>
+
+                <!-- Hàng 2: 2 nút ngang -->
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-warning flex-fill fw-semibold">
+                        Thêm vào giỏ hàng
+                    </button>
+                    <button class="btn btn-primary flex-fill fw-semibold">
+                        Trả góp 0% <br>
+                    </button>
+                </div>
+
             </div>
+
+
 
             <div class="small text-muted mt-2">
                 <i class="bi bi-geo-alt"></i>
