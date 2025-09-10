@@ -41,7 +41,7 @@ public class HomeController {
         model.addAttribute("categories", categories);
 
         return "client/homepage/home";
-
+    }
     @GetMapping("/account")
     public String getAccountPage(Authentication auth, Model model) {
         User u = userRepository.findByEmail(auth.getName()).orElseThrow();
