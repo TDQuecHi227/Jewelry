@@ -48,42 +48,42 @@
 
 
 
-<!-- Flash Sale Products (dùng Bootstrap grid) -->
-<!-- ===== FLASH SALE ===== -->
-<div class="container my-4">
-    <div class="fs-box">  <!-- khung boundary -->
-        <!-- Flash Sale -->
-        <div class="container-fluid bg-danger text-white text-center py-3">
-            <h2 class="fw-bold">⚡ CHỚP GIỜ VÀNG – RỘN RÀNG CHÀO LỄ ⚡</h2>
-        </div>
-        <!-- Tabs ngày -->
-        <div class="fs-tabs d-flex">
-            <div class="fs-tab"
-                 th:each="d, iter : ${flashDays}"
-                 th:classappend="${d.today} ? 'active' : ''">
+<!--&lt;!&ndash; Flash Sale Products (dùng Bootstrap grid) &ndash;&gt;-->
+<!--&lt;!&ndash; ===== FLASH SALE ===== &ndash;&gt;-->
+<!--<div class="container my-4">-->
+<!--    <div class="fs-box">  &lt;!&ndash; khung boundary &ndash;&gt;-->
+<!--        &lt;!&ndash; Flash Sale &ndash;&gt;-->
+<!--        <div class="container-fluid bg-danger text-white text-center py-3">-->
+<!--            <h2 class="fw-bold">⚡ CHỚP GIỜ VÀNG – RỘN RÀNG CHÀO LỄ ⚡</h2>-->
+<!--        </div>-->
+<!--        &lt;!&ndash; Tabs ngày &ndash;&gt;-->
+<!--        <div class="fs-tabs d-flex">-->
+<!--            <div class="fs-tab"-->
+<!--                 th:each="d, iter : ${flashDays}"-->
+<!--                 th:classappend="${d.today} ? 'active' : ''">-->
 
-                <div class="fs-tab-title"
-                     th:text="${iter.index == 0} ? '12:00, ' + ${d.label} : ${d.label}">
-                    12:00, 25/08
-                </div>
+<!--                <div class="fs-tab-title"-->
+<!--                     th:text="${iter.index == 0} ? '12:00, ' + ${d.label} : ${d.label}">-->
+<!--                    12:00, 25/08-->
+<!--                </div>-->
 
-                <!-- countdown hôm nay -->
-                <div class="fs-tab-sub" th:if="${d.today}">
-                    Bắt đầu sau:
-                    <span class="fs-countdown"
-                          th:attr="id=${'cd-' + iter.index}, data-time=${d.datetime}">
-            <span class="cd-badge" data-part="h">--</span>
-            <span class="cd-sep">:</span>
-            <span class="cd-badge" data-part="m">--</span>
-            <span class="cd-sep">:</span>
-            <span class="cd-badge" data-part="s">--</span>
-          </span>
-                </div>
+<!--                &lt;!&ndash; countdown hôm nay &ndash;&gt;-->
+<!--                <div class="fs-tab-sub" th:if="${d.today}">-->
+<!--                    Bắt đầu sau:-->
+<!--                    <span class="fs-countdown"-->
+<!--                          th:attr="id=${'cd-' + iter.index}, data-time=${d.datetime}">-->
+<!--            <span class="cd-badge" data-part="h">&#45;&#45;</span>-->
+<!--            <span class="cd-sep">:</span>-->
+<!--            <span class="cd-badge" data-part="m">&#45;&#45;</span>-->
+<!--            <span class="cd-sep">:</span>-->
+<!--            <span class="cd-badge" data-part="s">&#45;&#45;</span>-->
+<!--          </span>-->
+<!--                </div>-->
 
-                <!-- các ngày sau -->
-                <div class="fs-tab-sub text-muted" th:if="${!d.today}">Sắp diễn ra</div>
-            </div>
-        </div>
+<!--                &lt;!&ndash; các ngày sau &ndash;&gt;-->
+<!--                <div class="fs-tab-sub text-muted" th:if="${!d.today}">Sắp diễn ra</div>-->
+<!--            </div>-->
+<!--        </div>-->
 
         <!-- Danh sách sản phẩm (trượt ngang) -->
         <div class="fs-body position-relative">
@@ -93,32 +93,32 @@
             <div id="fs-scroller" class="fs-scroller">
                 <!-- Chia sản phẩm đều cho các ngày: index % days.size() -->
                 <div class="flashsale-item"
-                     th:each="p, it : ${products}"
-                     th:attr="data-day=${it.index % #lists.size(days)}">
+                     th:each="product : ${products}">
+<!--                     th:attr="data-day=${it.index % #lists.size(days)}">-->
 
                     <div class="card h-100 border-0 shadow-sm">
-                        <img th:src="@{${p.imageUrl}}" class="card-img-top" alt="Ảnh sản phẩm">
+                        <img th:src="@{${product.imageUrls[0]}}" class="card-img-top" alt="Ảnh sản phẩm">
 
                         <div class="card-body text-center">
 
                             <!-- HÀNG 1: Giá KM + % -->
                             <div class="price-box">
             <span class="price-new"
-                  th:text="${#numbers.formatDecimal(p.salePrice,0,'COMMA',0,'POINT')} + ' đ'">
+                  th:text="${#numbers.formatDecimal(product.price,0,'COMMA',0,'POINT')} + ' đ'">
               13,950,000 đ
             </span>
                                 <span class="discount-badge"
-                                      th:text="'-' + ${p.discountPercent} + '%'">-9%</span>
+                                      th:text="'-' + ${product.discount} + '%'">-9%</span>
                             </div>
 
                             <!-- HÀNG 2: Giá gốc -->
                             <div class="price-old"
-                                 th:text="${#numbers.formatDecimal(p.oldPrice,0,'COMMA',0,'POINT')} + ' đ'">
+                                 th:text="${#numbers.formatDecimal(product.price,0,'COMMA',0,'POINT')} + ' đ'">
                                 15,000,000 đ
                             </div>
 
                             <!-- Tên -->
-                            <p class="mb-0 mt-2" th:text="${p.name}">Tên sản phẩm</p>
+                            <p class="mb-0 mt-2" th:text="${product.name}">Tên sản phẩm</p>
                         </div>
 
                         <div class="card-footer text-center bg-white border-0">
@@ -143,7 +143,7 @@
     <h2>Sản phẩm nổi bật</h2>
     <div class="product-grid">
         <div class="product-card" th:each="product : ${products}">
-            <img th:src="@{${product.imageUrl}}" th:alt="${product.name}" />
+            <img th:src="@{${product.imageUrls[0]}}" th:alt="${product.name}" />
             <h3 th:text="${product.name}">Tên sản phẩm</h3>
             <p class="price"
                th:text="${#numbers.formatDecimal(product.price,0,'COMMA',0,'POINT')} + ' đ'">
