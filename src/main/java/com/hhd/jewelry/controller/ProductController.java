@@ -14,7 +14,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
-  
+
     @GetMapping("/products")
     public String getProductPage(Model model) {
         List<Product> products = productService.getAllProducts();

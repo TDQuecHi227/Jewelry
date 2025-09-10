@@ -18,4 +18,5 @@ public interface ProductService {
     void delete(Product product);
     void deleteAll();
     void resetAutoIncrement();
+    void AddProductToCart(String email, String serialNumber);
 }

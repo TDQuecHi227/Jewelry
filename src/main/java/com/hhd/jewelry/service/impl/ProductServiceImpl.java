@@ -1,7 +1,13 @@
 package com.hhd.jewelry.service.impl;
 
+import com.hhd.jewelry.entity.Cart;
+import com.hhd.jewelry.entity.CartItem;
 import com.hhd.jewelry.entity.Product;
+import com.hhd.jewelry.entity.User;
+import com.hhd.jewelry.repository.CartItemRepository;
+import com.hhd.jewelry.repository.CartRepository;
 import com.hhd.jewelry.repository.ProductRepository;
+import com.hhd.jewelry.repository.UserRepository;
 import com.hhd.jewelry.service.ProductService;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +17,16 @@ import java.util.Optional;
 @Service
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
+    private final CartRepository cartRepository;
+    private final CartItemRepository cartItemRepository;
+    private final UserRepository  userRepository;
 
-    public ProductServiceImpl(ProductRepository productRepository) {
+
+    public ProductServiceImpl(ProductRepository productRepository, CartRepository cartRepository, CartItemRepository cartItemRepository, UserRepository userRepository) {
         this.productRepository = productRepository;
+        this.cartRepository = cartRepository;
+        this.cartItemRepository = cartItemRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -102,4 +115,31 @@ public class ProductServiceImpl implements ProductService {
     public void resetAutoIncrement() {
         productRepository.resetAutoIncrement();
     }
+
+    @Override
+    public void AddProductToCart(String email, String serialNumber){
+        User user = userRepository.findByEmail(email).orElse(null);
+        if(user != null){
+            Cart cart = this.cartRepository.findByUser(user);
+            if (cart == null){
+                Cart newCart = new Cart();
+                newCart.setUser(user);
+                cart = this.cartRepository.save(newCart);
+            }
+            Product product = productRepository.findBySerialNumber(serialNumber).orElse(null);
+            CartItem cartItem = cartItemRepository.findByProduct(product);
+            if (cartItem == null || cartItem.getCart() != cart){
+                cartItem = new CartItem();
+                cartItem.setCart(cart);
+                cartItem.setProduct(product);
+                cartItem.setQuantity(1);
+                cartItem.setPrice(product.getPrice());
+            }
+            else {
+                cartItem.setQuantity(cartItem.getQuantity() + 1);
+            }
+            this.cartItemRepository.save(cartItem);
+        }
+    }
+
 }
