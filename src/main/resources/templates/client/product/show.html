@@ -106,10 +106,13 @@
 
                         <!-- Footer: luôn ở đáy card -->
                         <div class="card-footer bg-transparent border-0 pt-0">
-                            <button type="button" class="btn btn-warning w-100 btn-add"
-                                    th:attr="data-id=${p.id}, data-name=${p.name}, data-price=${effectivePrice}">
-                                Thêm vào giỏ
-                            </button>
+                            <form th:action="@{/cart/add/{serialnumber} (serialnumber=${p.serialNumber})}" method="post">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                <input type="hidden" name="qty" value="1" />
+                                <button type="submit" class="btn btn-warning w-100 btn-add">
+                                    Thêm vào giỏ
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

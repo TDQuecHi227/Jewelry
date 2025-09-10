@@ -1,13 +1,53 @@
 document.addEventListener("DOMContentLoaded", () => {
     console.log("Trang chủ PNJ demo loaded ✔️");
-
+    //
     document.querySelectorAll(".btn-add").forEach(btn => {
         btn.addEventListener("click", () => {
             alert("Sản phẩm đã được thêm vào giỏ hàng 🛒");
         });
     });
 });
+document.addEventListener('click', function(e){
+    const btn = e.target.closest('form[action^="/cart/add/"] button[type="submit"]');
+    if(!btn) return;
 
+    const form = btn.closest('form');
+    e.preventDefault();
+
+    // Lấy URL add + thêm ajax=1
+    const url = form.getAttribute('action') + '?ajax=1';
+    const csrfName = form.querySelector('input[type="hidden"]').getAttribute('name');
+    const csrfVal  = form.querySelector('input[type="hidden"]').value;
+
+    fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ [csrfName]: csrfVal })
+    })
+        .then(r => r.json())
+        .then(data => {
+            if(data.ok){
+                // cập nhật badge trên header
+                let badge = document.querySelector('.cart-count');
+                if(!badge){
+                    const link = document.querySelector('a[href="/cart"], a[th\\:href="@{/cart}"]') || document.querySelector('.cart-link');
+                    if(link){
+                        badge = document.createElement('span');
+                        badge.className = 'position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count';
+                        link.classList.add('position-relative');
+                        link.appendChild(badge);
+                    }
+                }
+                if(badge){
+                    badge.textContent = data.count;
+                    badge.style.display = (data.count > 0) ? '' : 'none';
+                }
+            } else {
+                window.location.href = '/login';
+            }
+        })
+        .catch(() => window.location.reload());
+});
 // ===== Countdown (giữ code bạn đang dùng; dưới đây là bản gọn) =====
 function tick() {
     document.querySelectorAll(".fs-countdown").forEach(el => {
