@@ -1,24 +1,22 @@
 :root {
-    --bg1: #0b1220;
-    --bg2: #111827;
-    --card: #0f172a;
-    --border: #1f2937;
-    --fg: #e5e7eb;
-    --muted: #94a3b8;
-    --accent: #ffd700;
+    --bg1: #f8fafc;          /* nền sáng */
+    --bg2: #ffffff;
+    --card: #ffffff;
+    --border: #e5e7eb;       /* viền xám nhạt */
+    --fg: #111827;           /* chữ tối */
+    --muted: #6b7280;        /* chữ phụ */
+    --accent: #ffd700;       /* vàng PNJ */
 }
 
-html, body {
-    height: 100%;
-}
+html, body { height: 100%; }
 
 body {
     margin: 0;
     font-family: Inter, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
     color: var(--fg);
     background:
-            radial-gradient(1200px 700px at 80% -10%, #1f2937 0%, transparent 60%),
-            radial-gradient(800px 500px at 0% 100%, #1e293b 0%, transparent 60%),
+            radial-gradient(1200px 700px at 80% -10%, #eef2f7 0%, transparent 60%),
+            radial-gradient(800px 500px at 0% 100%, #eef2ff 0%, transparent 60%),
             linear-gradient(180deg, var(--bg1), var(--bg2));
 }
 
@@ -33,11 +31,11 @@ body {
 .login-card {
     width: 100%;
     max-width: 460px;
-    background: rgba(17, 24, 39, 0.85);
+    background: var(--card);
     border: 1px solid var(--border);
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
-    backdrop-filter: blur(6px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+    backdrop-filter: none; /* bỏ blur tối */
 }
 
 .brand {
@@ -47,72 +45,50 @@ body {
     margin-bottom: 8px;
 }
 
-.brand img {
-    height: 40px;
-}
+.brand img { height: 40px; }
 
-.brand-name {
-    font-weight: 700;
-    letter-spacing: .3px;
-}
+.brand-name { font-weight: 700; letter-spacing: .3px; }
 
-.subtle {
-    color: var(--muted);
-    font-size: .95rem;
-}
+.subtle { color: var(--muted); font-size: .95rem; }
 
-.form-label {
-    color: #cbd5e1;
-    font-weight: 600;
-}
+.form-label { color: #374151; font-weight: 600; }
 
 .form-control {
-    background: #0b1324;
-    border: 1px solid #22304a;
+    background: #ffffff;
+    border: 1px solid var(--border);
     color: var(--fg);
+    border-radius: 10px;
 }
 
 .form-control:focus {
-    border-color: #365485;
-    box-shadow: 0 0 0 .2rem rgba(54, 84, 133, .25);
+    border-color: #93c5fd; /* xanh dương nhạt */
+    box-shadow: 0 0 0 .2rem rgba(147, 197, 253, .35);
+    outline: none;
 }
 
 .btn-gold {
     background: linear-gradient(180deg, #ffe26e, var(--accent));
-    color: #1a1a1a;
+    color: #1f2937;
     font-weight: 700;
     border: none;
     border-radius: 12px;
-    transition: transform .05s ease-in-out, box-shadow .2s;
+    transition: transform .05s ease-in-out, box-shadow .2s, filter .2s;
 }
 
-.btn-gold:hover {
-    box-shadow: 0 8px 18px rgba(255, 215, 0, .25);
-}
-
-.btn-gold:active {
-    transform: translateY(1px);
-}
+.btn-gold:hover { box-shadow: 0 8px 18px rgba(255, 215, 0, .25); filter: brightness(1.03); }
+.btn-gold:active { transform: translateY(1px); }
 
 .btn-ghost {
+    background: #ffffff;
+    color: #1f2937;
+    border: 1px solid var(--border);
     border-radius: 12px;
 }
 
-.toggle-pass {
-    cursor: pointer;
-    user-select: none;
-    font-size: .95rem;
-    color: #cbd5e1;
-}
+.toggle-pass { cursor: pointer; user-select: none; font-size: .95rem; color: #4b5563; }
 
-.links a {
-    color: #93c5fd;
-    text-decoration: none;
-}
-
-.links a:hover {
-    text-decoration: underline;
-}
+.links a { color: #2563eb; text-decoration: none; }
+.links a:hover { text-decoration: underline; }
 
 .divider {
     text-align: center;
@@ -128,19 +104,16 @@ body {
     top: 50%;
     width: 40%;
     height: 1px;
-    background: #22304a;
+    background: var(--border);
 }
 
-.divider::before {
-    left: 0;
-}
-
-.divider::after {
-    right: 0;
-}
+.divider::before { left: 0; }
+.divider::after { right: 0; }
 
 .alert-soft {
-    background: rgba(220, 38, 38, .12);
-    border: 1px solid rgba(248, 113, 113, .35);
-    color: #fecaca;
+    background: rgba(239, 68, 68, .08);           /* đỏ nhạt */
+    border: 1px solid rgba(239, 68, 68, .25);
+    color: #991b1b;
+    border-radius: 12px;
+    padding: 10px 12px;
 }

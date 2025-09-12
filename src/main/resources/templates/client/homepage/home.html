@@ -71,6 +71,43 @@
             </div>
         </div>
 
+<!-- Flash Sale Products (dùng Bootstrap grid) -->
+<!-- ===== FLASH SALE ===== -->
+<!--<div class="container my-4">-->
+<!--    <div class="fs-box">  &lt;!&ndash; khung boundary &ndash;&gt;-->
+<!--        &lt;!&ndash; Flash Sale &ndash;&gt;-->
+<!--        <div class="container-fluid bg-danger text-white text-center py-3">-->
+<!--            <h2 class="fw-bold">⚡ CHỚP GIỜ VÀNG – RỘN RÀNG CHÀO LỄ ⚡</h2>-->
+<!--        </div>-->
+<!--        &lt;!&ndash; Tabs ngày &ndash;&gt;-->
+<!--        <div class="fs-tabs d-flex">-->
+<!--            <div class="fs-tab"-->
+<!--                 th:each="d, iter : ${flashDays}"-->
+<!--                 th:classappend="${d.today} ? 'active' : ''">-->
+
+<!--                <div class="fs-tab-title"-->
+<!--                     th:text="${iter.index == 0} ? '12:00, ' + ${d.label} : ${d.label}">-->
+<!--                    12:00, 25/08-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; countdown hôm nay &ndash;&gt;-->
+<!--                <div class="fs-tab-sub" th:if="${d.today}">-->
+<!--                    Bắt đầu sau:-->
+<!--                    <span class="fs-countdown"-->
+<!--                          th:attr="id=${'cd-' + iter.index}, data-time=${d.datetime}">-->
+<!--            <span class="cd-badge" data-part="h">&#45;&#45;</span>-->
+<!--            <span class="cd-sep">:</span>-->
+<!--            <span class="cd-badge" data-part="m">&#45;&#45;</span>-->
+<!--            <span class="cd-sep">:</span>-->
+<!--            <span class="cd-badge" data-part="s">&#45;&#45;</span>-->
+<!--          </span>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; các ngày sau &ndash;&gt;-->
+<!--                <div class="fs-tab-sub text-muted" th:if="${!d.today}">Sắp diễn ra</div>-->
+<!--            </div>-->
+<!--        </div>-->
+
         <!-- Nút phải -->
         <button class="scroll-btn next-btn">&#8250;</button>
     </div>
@@ -90,7 +127,6 @@
 <!-- Collection carousel (Bộ sưu tập mới) -->
 <section class="collections container my-4 text-center">
     <h2>Bộ sưu tập mới</h2>
-
     <div class="collection-wrap position-relative mt-3">
         <button class="col-nav col-prev" aria-label="Trước">‹</button>
 
