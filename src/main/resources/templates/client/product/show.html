@@ -106,9 +106,8 @@
 
                         <!-- Footer: luôn ở đáy card -->
                         <div class="card-footer bg-transparent border-0 pt-0">
-                            <form th:action="@{/cart/add/{serialnumber} (serialnumber=${p.serialNumber})}" method="post">
-                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                                <input type="hidden" name="qty" value="1" />
+                            <form th:action="@{/cart/add/{serialnumber}(serialnumber=${p.serialNumber})}" method="post">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                                 <button type="submit" class="btn btn-warning w-100 btn-add">
                                     Thêm vào giỏ
                                 </button>

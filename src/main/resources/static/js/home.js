@@ -48,6 +48,7 @@ document.addEventListener('click', function(e){
         })
         .catch(() => window.location.reload());
 });
+
 // ===== Countdown (giữ code bạn đang dùng; dưới đây là bản gọn) =====
 function tick() {
     document.querySelectorAll(".fs-countdown").forEach(el => {

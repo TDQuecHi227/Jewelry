@@ -117,29 +117,28 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void AddProductToCart(String email, String serialNumber){
+    public void AddProductToCart(String email, String serialNumber) {
         User user = userRepository.findByEmail(email).orElse(null);
-        if(user != null){
+        if (user != null) {
             Cart cart = this.cartRepository.findByUser(user);
-            if (cart == null){
+            if (cart == null) {
                 Cart newCart = new Cart();
                 newCart.setUser(user);
-                cart = this.cartRepository.save(newCart);
             }
             Product product = productRepository.findBySerialNumber(serialNumber).orElse(null);
-            CartItem cartItem = cartItemRepository.findByProduct(product);
-            if (cartItem == null || cartItem.getCart() != cart){
-                cartItem = new CartItem();
-                cartItem.setCart(cart);
-                cartItem.setProduct(product);
-                cartItem.setQuantity(1);
-                cartItem.setPrice(product.getPrice());
-            }
-            else {
+            CartItem cartItem = cartItemRepository.findByProduct(product).orElse(null);
+            if (cartItem == null || cartItem.getCart() != cart) {
+                CartItem newCartItem = new CartItem();
+                newCartItem.setProduct(product);
+                newCartItem.setCart(cart);
+                newCartItem.setQuantity(1);
+                newCartItem.setPrice(product.getPrice());
+                this.cartItemRepository.save(newCartItem);
+            } else {
                 cartItem.setQuantity(cartItem.getQuantity() + 1);
+                cartItem.setPrice(product.getPrice() * cartItem.getQuantity());
+                this.cartItemRepository.save(cartItem);
             }
-            this.cartItemRepository.save(cartItem);
         }
     }
-
 }

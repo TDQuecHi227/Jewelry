@@ -42,13 +42,13 @@ public class CartController {
         return "client/product/cart";
     }
 
-    @PostMapping("/cart/add/{serialnumber}")
-    public String addToCart(@PathVariable String serialnumber, Authentication authentication) {
-        String email = authentication.getName();
-        String serialNumber =  serialnumber;
-        this.productService.AddProductToCart(email, serialNumber);
-        return "redirect:/";
-    }
+//    @PostMapping("/cart/add/{serialnumber}")
+//    public String addToCart(@PathVariable String serialnumber, Authentication authentication) {
+//        String email = authentication.getName();
+//        String serialNumber =  serialnumber;
+//        this.productService.AddProductToCart(email, serialNumber);
+//        return "redirect:/";
+//    }
     @PostMapping(value="/cart/add/{serialnumber}", params="ajax=1")
     @ResponseBody
     public Map<String, Object> addToCartAjax(@PathVariable String serialnumber,
