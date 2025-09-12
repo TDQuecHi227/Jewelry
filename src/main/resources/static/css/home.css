@@ -2,7 +2,7 @@
    1) BASE / RESET
    ========================================================= */
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Nunito", sans-serif;
     margin: 0;
     padding: 0;
     background: #fff;
@@ -43,12 +43,320 @@ body {
     color: #d4af37;
 }
 
+/* Viewed Product */
+.viewed-products {
+    background: linear-gradient(to right, #dbeafe, #e0f2fe);
+    border-radius: 15px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.card {
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.03);
+}
+
+.card-price {
+    font-size: 1.2rem;
+    color: #d97706;
+}
+
+.viewed-wrapper {
+    position: relative;
+    overflow: hidden;
+    padding: 0 40px; /* Tạo không gian cho các nút */
+}
+
+.viewed-list {
+    display: flex;
+    gap: 20px;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    padding: 10px;
+}
+
+.viewed-item {
+    flex: 0 0 calc((100% - 60px) / 4);
+    min-width: 0;
+    flex-shrink: 0;
+}
+
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: white;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 10;
+    transition: all 0.3s;
+}
+
+.nav-btn:hover {
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.prev-btn {
+    left: 10px;
+}
+
+.next-btn {
+    right: 10px;
+}
+
+.viewed-list::-webkit-scrollbar {
+    display: none;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .viewed-item {
+        flex: 0 0 calc((100% - 40px) / 3);
+    }
+}
+
+@media (max-width: 768px) {
+    .viewed-item {
+        flex: 0 0 calc((100% - 20px) / 2);
+    }
+
+    .viewed-wrapper {
+        padding: 0 35px;
+    }
+
+    .nav-btn {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+@media (max-width: 576px) {
+    .viewed-item {
+        flex: 0 0 100%;
+    }
+}
+
+/* === Collection carousel (Bộ sưu tập mới) === */
+.collections h2 {
+    font-size: 22px;
+    color: #09304a;
+    margin-top: 6px;
+}
+
+.collection-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    position: relative;
+}
+
+.collection-track {
+    position: relative;
+    width: 60%;
+    margin: 0 auto;
+    height: 280px;
+    overflow: visible;
+}
+
+/* Item */
+.collection-item {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    width: 260px;
+    height: 260px;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 8px 20px rgba(3, 33, 66, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    touch-action: manipulation;
+
+    /* quan trọng */
+    transform: translateX(-50%) scale(0.85);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    z-index: 1;
+}
+
+.collection-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+}
+
+.collection-item .collection-title {
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    padding: 8px 14px;
+    border-radius: 999px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    font-weight: 700;
+    color: #0d3762;
+    font-size: 14px;
+}
+
+.collection-item.active {
+    transform: translateX(-50%) scale(1);
+    z-index: 200;
+}
+
+/* Nút điều hướng */
+.col-nav {
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #0d3762;
+    cursor: pointer;
+}
+.col-nav:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+/* Dots */
+.collection-dots {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+.collection-dots button {
+    border: none;
+    background: #d5d5d5;
+    cursor: pointer;
+}
+.collection-dots button.active {
+    background: #0d3762;
+    box-shadow: 0 2px 6px rgba(13, 55, 98, 0.18);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .collection-track {
+        height: 210px;
+    }
+    .collection-item {
+        width: 180px;
+        height: 180px;
+        top: 6px;
+    }
+    .collection-item .collection-title {
+        font-size: 13px;
+    }
+}
+@media (max-width: 600px) {
+    .collection-track {
+        height: 160px;
+    }
+    .collection-item {
+        width: 130px;
+        height: 130px;
+        top: 4px;
+    }
+    .collection-item .collection-title {
+        display: none;
+    }
+}
+@media (max-width: 900px) {
+    .commitment-list { gap: 16px; }
+    .commitment-item { padding: 12px 10px; min-width: 140px; }
+    .commitment-icon { width: 36px; height: 36px; }
+    .commitment-title { font-size: 15px; }
+    .commitment-desc { font-size: 13px; }
+}
+@media (max-width: 600px) {
+    .commitment-list { flex-direction: column; gap: 10px; }
+    .commitment-item { width: 100%; min-width: unset; justify-content: flex-start; }
+}
+
 /* =========================================================
    3) HERO BANNER
    ========================================================= */
 .hero-banner img {
     width: 100%;
     display: block;
+}
+
+/* === Cam kết dịch vụ (service commitments) === */
+.service-commitments {
+    width: 100%;
+    margin: 40px auto 32px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.commitment-list {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 900px;
+}
+.commitment-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #f6f6f6;
+    border-radius: 14px;
+    padding: 16px 32px;
+    min-width: 220px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+.commitment-icon {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+}
+.commitment-title {
+    font-weight: bold;
+    color: #0d3762;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+}
+.commitment-desc {
+    color: #444;
+    font-size: 15px;
+}
+@media (max-width: 900px) {
+    .commitment-list { gap: 16px; }
+    .commitment-item { padding: 12px 10px; min-width: 140px; }
+    .commitment-icon { width: 36px; height: 36px; }
+    .commitment-title { font-size: 15px; }
+    .commitment-desc { font-size: 13px; }
+}
+@media (max-width: 600px) {
+    .commitment-list { flex-direction: column; gap: 10px; }
+    .commitment-item { width: 100%; min-width: unset; justify-content: flex-start; }
 }
 
 /* =========================================================
@@ -59,22 +367,70 @@ body {
     text-align: center;
 }
 .categories h2 {
-    font-size: 24px;
+    font-size: 27px;
     margin-bottom: 20px;
 }
-.category-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 20px;
+
+/* === Danh mục nổi bật: 1 hàng 6 sản phẩm === */
+.category-row-1line {
+    display: flex;
+    justify-content: center;
+    gap: 45px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+.category-item {
+    flex: 1 1 0;
+    max-width: 180px;
+    background: none;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+    transition: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.category-item:hover {
+    box-shadow: none;
+    transform: none;
 }
 .category-item img {
     width: 100%;
     border-radius: 8px;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    transition: box-shadow 0.25s, transform 0.18s;
+    box-shadow: none;
+}
+.category-item img:hover {
+    box-shadow: 0 6px 24px 0 rgba(212,175,55,0.18), 0 1.5px 8px 0 rgba(0,0,0,0.08);
+    transform: translateY(-4px) scale(1.04);
+    z-index: 2;
 }
 .category-item p {
-    margin-top: 8px;
+    margin-top: 10px;
     font-weight: bold;
+    font-size: 16px;
+    color: #b7950b;
 }
+
+@media (max-width: 1200px) {
+    .category-row-1line { gap: 16px; max-width: 100%; }
+    .category-item { max-width: 120px; }
+}
+@media (max-width: 800px) {
+    .category-row-1line { gap: 8px; }
+    .category-item { max-width: 90px; }
+}
+@media (max-width: 600px) {
+    .category-row-1line { flex-wrap: wrap; }
+    .category-item { max-width: 45vw; }
+}
+
+
 
 /* =========================================================
    5) FEATURED PRODUCTS (GRID + CARD)
