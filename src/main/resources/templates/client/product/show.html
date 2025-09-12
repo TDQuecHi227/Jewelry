@@ -1,63 +1,113 @@
+<!-- src/main/resources/templates/client/products/list.html -->
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>Sản phẩm | PNJ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" th:href="@{/css/home.css}" />
+    <link rel="stylesheet" th:href="@{/css/home.css}"/>
 </head>
 <body>
 <header th:replace="client/layout/header :: header"></header>
 
-<section class="hero-banner">
-    <img th:src="@{/images/banner/Banner.jpg}" alt="PNJ Banner"/>
-</section>
-
 <section class="container my-4">
     <div class="row g-4">
 
-        <!-- LEFT FILTER -->
+        <!-- FILTER LEFT -->
         <aside class="col-12 col-md-3">
-            <div class="filter-box sticky-top">
+            <form method="get" class="filter-box sticky-top p-3 rounded border bg-white">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                     <h5 class="mb-0">Bộ lọc</h5>
-                    <button id="btnClearFilters" class="btn btn-sm btn-link">Xoá tất cả</button>
+                    <a th:href="@{/products}" class="btn btn-sm btn-link">Xoá tất cả</a>
                 </div>
 
-                <!-- Search -->
+                <!-- Tìm kiếm -->
                 <div class="mb-3">
                     <label class="form-label">Tìm kiếm</label>
-                    <input id="q" type="text" class="form-control" placeholder="Nhẫn, Vòng tay, ...">
+                    <input name="q" type="text" class="form-control" placeholder="Nhẫn, Lắc tay, ..."
+                           th:value="${params['q']}">
                 </div>
 
-                <!-- Category (tĩnh hoặc bạn có thể thay bằng loop từ Category) -->
+                <!-- Danh mục theo tên (đổi Vòng tay → Lắc tay, thêm Đồng hồ) -->
                 <div class="mb-3">
                     <label class="form-label">Danh mục</label>
-                    <div class="form-check"><input class="form-check-input" type="checkbox" name="cat" value="nhẫn" id="c1"><label class="form-check-label" for="c1">Nhẫn</label></div>
-                    <div class="form-check"><input class="form-check-input" type="checkbox" name="cat" value="vòng" id="c2"><label class="form-check-label" for="c2">Vòng tay</label></div>
-                    <div class="form-check"><input class="form-check-input" type="checkbox" name="cat" value="dây chuyền" id="c3"><label class="form-check-label" for="c3">Dây chuyền</label></div>
-                    <div class="form-check"><input class="form-check-input" type="checkbox" name="cat" value="bông tai" id="c4"><label class="form-check-label" for="c4">Bông tai</label></div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="catName" value="nhẫn" id="c1"
+                               th:checked="${params['catName'] != null and #lists.contains(params['catName'], 'nhẫn')}">
+                        <label class="form-check-label" for="c1">Nhẫn</label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="catName" value="lắc tay" id="c2"
+                               th:checked="${params['catName'] != null and #lists.contains(params['catName'], 'lắc tay')}">
+                        <label class="form-check-label" for="c2">Lắc tay</label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="catName" value="dây chuyền" id="c3"
+                               th:checked="${params['catName'] != null and #lists.contains(params['catName'], 'dây chuyền')}">
+                        <label class="form-check-label" for="c3">Dây chuyền</label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="catName" value="bông tai" id="c4"
+                               th:checked="${params['catName'] != null and #lists.contains(params['catName'], 'bông tai')}">
+                        <label class="form-check-label" for="c4">Bông tai</label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="catName" value="đồng hồ" id="c5"
+                               th:checked="${params['catName'] != null and #lists.contains(params['catName'], 'đồng hồ')}">
+                        <label class="form-check-label" for="c5">Đồng hồ</label>
+                    </div>
                 </div>
 
-                <!-- Quick ranges -->
+                <!-- Khoảng giá (đ): radio pill + nhập tay -->
                 <div class="mb-3">
                     <label class="form-label">Khoảng giá (đ)</label>
+
                     <div class="d-flex flex-wrap gap-2 mb-2">
-                        <button class="btn btn-light btn-sm badge-range" data-min="0" data-max="3000000">≤ 3 triệu</button>
-                        <button class="btn btn-light btn-sm badge-range" data-min="3000000" data-max="7000000">3–7 triệu</button>
-                        <button class="btn btn-light btn-sm badge-range" data-min="7000000" data-max="15000000">7–15 triệu</button>
-                        <button class="btn btn-light btn-sm badge-range" data-min="15000000" data-max="">≥ 15 triệu</button>
+                        <input type="radio" class="btn-check" name="priceRange" id="rLE3" value="LE3"
+                               th:checked="${params['priceRange'] == 'LE3'}">
+                        <label class="btn btn-light btn-sm" for="rLE3">≤ 3 triệu</label>
+
+                        <input type="radio" class="btn-check" name="priceRange" id="rB3_7" value="B3_7"
+                               th:checked="${params['priceRange'] == 'B3_7'}">
+                        <label class="btn btn-light btn-sm" for="rB3_7">3–7 triệu</label>
+
+                        <input type="radio" class="btn-check" name="priceRange" id="rB7_15" value="B7_15"
+                               th:checked="${params['priceRange'] == 'B7_15'}">
+                        <label class="btn btn-light btn-sm" for="rB7_15">7–15 triệu</label>
+
+                        <input type="radio" class="btn-check" name="priceRange" id="rGE15" value="GE15"
+                               th:checked="${params['priceRange'] == 'GE15'}">
+                        <label class="btn btn-light btn-sm" for="rGE15">≥ 15 triệu</label>
                     </div>
+
                     <div class="row g-2">
-                        <div class="col-6"><input id="minPrice" type="number" class="form-control" placeholder="Từ"></div>
-                        <div class="col-6"><input id="maxPrice" type="number" class="form-control" placeholder="Đến"></div>
+                        <div class="col-6">
+                            <input name="minPrice" type="number" class="form-control" placeholder="Từ"
+                                   th:value="${params['minPrice']}">
+                        </div>
+                        <div class="col-6">
+                            <input name="maxPrice" type="number" class="form-control" placeholder="Đến"
+                                   th:value="${params['maxPrice']}">
+                        </div>
+                    </div>
+
+                    <div class="mt-2">
+                        <input type="radio" class="btn-check" name="priceRange" id="rNone" value=""
+                               th:checked="${params['priceRange'] == null}">
+                        <label class="btn btn-link btn-sm px-0" for="rNone">Bỏ chọn mức cố định</label>
                     </div>
                 </div>
 
-                <!-- Sort -->
-                <div class="mb-1">
+                <!-- Sắp xếp -->
+                <div class="mb-3">
                     <label class="form-label">Sắp xếp</label>
-                    <select id="sort" class="form-select form-select-sm">
+                    <select name="sort" class="form-select form-select-sm" th:value="${params['sort']}">
                         <option value="">Mặc định</option>
                         <option value="priceAsc">Giá tăng dần</option>
                         <option value="priceDesc">Giá giảm dần</option>
@@ -65,46 +115,39 @@
                         <option value="nameDesc">Tên Z→A</option>
                     </select>
                 </div>
-            </div>
+
+            </form>
         </aside>
 
-        <!-- RIGHT GRID -->
+        <!-- GRID RIGHT -->
         <div class="col-12 col-md-9">
             <div id="productGrid" class="row row-cols-2 row-cols-md-3 g-3">
-                <!-- p là Product -->
-                <div class="col" th:each="p : ${products}" ...>
+                <div class="col" th:each="p : ${products}">
                     <div class="product-card card h-100 d-flex flex-column"
-                         th:with=" d=${p.discount != null ? p.discount : 0},
-                         salePrice=${(p.price * (100 - d)) / 100}, hasDiscount=${d > 0},
-                         mainImage=${#lists.isEmpty(p.imageUrls) ? '/images/placeholder.jpg' : p.imageUrls[0]},
-                         catName=${p.category != null ? (p.category.name != null ? p.category.name : '') : ''},
-                         effectivePrice=${hasDiscount ? salePrice : p.price} ">
-                        <!-- Ảnh: khung cố định tỉ lệ, ảnh căn giữa -->
-                        <a th:href="@{/details/{serialnumber}(serialnumber=${p.serialNumber})}" class="card-link">
-                            <div class="img-box">
-                                <img th:src="${mainImage}" th:alt="${p.name}">
-                            </div>
+                         th:with="
+                 d=${p.discount != null ? p.discount : 0},
+                 salePrice=${(p.price * (100 - d)) / 100},
+                 hasDiscount=${d > 0},
+                 mainImage=${#lists.isEmpty(p.imageUrls) ? '/images/placeholder.jpg' : p.imageUrls[0]},
+                 effectivePrice=${hasDiscount ? salePrice : p.price}">
+                        <a th:href="@{/details/{serial}(serial=${p.serialNumber})}" class="card-link">
+                            <div class="img-box"><img th:src="${mainImage}" th:alt="${p.name}"/></div>
                         </a>
 
-                        <!-- Nội dung: cho phép co giãn -->
                         <div class="card-body text-center d-flex flex-column">
-                            <h3 class="fs-6 mb-1" th:text="${p.displayName}">Tên sản phẩm</h3>
-
+                            <h3 class="fs-6 mb-1" th:text="${p.displayName != null ? p.displayName : p.name}">Tên sản phẩm</h3>
                             <div class="d-flex align-items-baseline justify-content-center gap-2 mb-1">
-        <span class="h5 text-danger fw-bold"
-              th:text="${#numbers.formatDecimal(effectivePrice,0,'COMMA',0,'POINT')} + ' đ'">0 đ</span>
+                                <span class="h5 text-danger fw-bold"
+                                      th:text="${#numbers.formatDecimal(effectivePrice,0,'COMMA',0,'POINT')} + ' đ'">0 đ</span>
                                 <span class="badge rounded-pill bg-warning text-dark fw-semibold"
                                       th:if="${hasDiscount}" th:text="'-' + ${d} + '%'">-0%</span>
                             </div>
-
                             <div class="text-muted text-decoration-line-through small mb-0"
                                  th:if="${hasDiscount}"
                                  th:text="${#numbers.formatDecimal(p.price,0,'COMMA',0,'POINT')} + ' đ'">0 đ</div>
-                            <!-- đẩy footer xuống đáy nếu body thiếu nội dung -->
                             <div class="flex-grow-1"></div>
                         </div>
 
-                        <!-- Footer: luôn ở đáy card -->
                         <div class="card-footer bg-transparent border-0 pt-0">
                             <form th:action="@{/cart/add/{serialnumber}(serialnumber=${p.serialNumber})}" method="post">
                                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
@@ -115,8 +158,24 @@
                         </div>
                     </div>
                 </div>
-
             </div>
+
+            <!-- Pagination -->
+            <nav class="mt-3" th:if="${pageData.totalPages > 1}">
+                <ul class="pagination pagination-sm">
+                    <li class="page-item" th:classappend="${pageData.first}? 'disabled'">
+                        <a class="page-link" th:href="@{/products( ${params}, page=${pageData.number-1}, size=${pageData.size} )}">«</a>
+                    </li>
+                    <li class="page-item" th:each="i : ${#numbers.sequence(0, pageData.totalPages-1)}"
+                        th:classappend="${i == pageData.number} ? 'active'">
+                        <a class="page-link" th:text="${i+1}"
+                           th:href="@{/products( ${params}, page=${i}, size=${pageData.size} )}">1</a>
+                    </li>
+                    <li class="page-item" th:classappend="${pageData.last}? 'disabled'">
+                        <a class="page-link" th:href="@{/products( ${params}, page=${pageData.number+1}, size=${pageData.size} )}">»</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
 
     </div>
@@ -125,6 +184,7 @@
 <footer th:replace="client/layout/footer :: footer"></footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Gọi file JS chung (đã lược bỏ filter) -->
 <script th:src="@{/js/home.js}"></script>
 </body>
 </html>
