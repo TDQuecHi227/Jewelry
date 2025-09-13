@@ -131,7 +131,6 @@
         <button class="col-nav col-prev" aria-label="Trước">‹</button>
 
         <div class="collection-track" id="collectionTrack">
-            <!-- each collection has data-collection-id -->
             <div class="collection-item"
                  th:each="col : ${collections}"
                  th:attr="data-collection-id=${col.id}">

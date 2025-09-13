@@ -8,6 +8,80 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+// ===== Collection carousel + filter products by collection =====
+document.addEventListener('DOMContentLoaded', () => {
+    const track = document.getElementById('collectionTrack');
+    if (!track) return;
+
+    const items = Array.from(track.querySelectorAll('.collection-item'));
+    const dotsWrap = document.getElementById('collectionDots');
+    const prevBtn = document.querySelector('.col-prev');
+    const nextBtn = document.querySelector('.col-next');
+
+    // create dots
+    items.forEach((it, idx) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        if (idx === 0) b.classList.add('active');
+        b.addEventListener('click', () => setActive(idx));
+        dotsWrap.appendChild(b);
+    });
+
+    let activeIndex = 0;
+
+    function setActive(index){
+        activeIndex = Math.max(0, Math.min(index, items.length-1));
+
+        const spacing = 120; // px offset per item from center
+
+        items.forEach((it,i)=>{
+            it.classList.remove('active');
+            const delta = i - activeIndex;
+            const tx = delta * spacing; // px
+            // anchor at center (-50%) then shift by tx
+            const scale = delta === 0 ? 1 : Math.max(0.82, 1 - Math.abs(delta) * 0.08);
+            it.style.transform = `translateX(calc(-50% + ${tx}px)) scale(${scale})`;
+            it.style.zIndex = String(100 - Math.abs(delta));
+            if (delta === 0) it.classList.add('active');
+        });
+
+        // update dots
+        const dots = Array.from(dotsWrap.children);
+        dots.forEach((d, i)=> d.classList.toggle('active', i === activeIndex));
+
+        // disable nav at edges
+        if (prevBtn) prevBtn.disabled = activeIndex <= 0;
+        if (nextBtn) nextBtn.disabled = activeIndex >= items.length - 1;
+
+        // filter products by collection
+        const activeEl = items[activeIndex];
+        const colId = activeEl && activeEl.dataset ? activeEl.dataset.collectionId : undefined;
+        document.querySelectorAll('.product-card').forEach(card => {
+            const pid = card.dataset.collectionId;
+            card.style.display = (!pid || !colId || pid === colId) ? '' : 'none';
+        });
+    }
+
+    // nav
+    prevBtn && prevBtn.addEventListener('click', ()=> setActive(activeIndex-1));
+    nextBtn && nextBtn.addEventListener('click', ()=> setActive(activeIndex+1));
+
+    // click on item
+    items.forEach((it, idx)=> it.addEventListener('click', ()=> setActive(idx)));
+
+    // initial
+    // ensure layout after images load
+    items.forEach(it=>{
+        const img = it.querySelector('img');
+        if (img && !img.complete) img.addEventListener('load', ()=> setActive(activeIndex));
+    });
+    // recalc on resize
+    window.addEventListener('resize', ()=> setActive(activeIndex));
+
+    // small defer to allow layout/fonts/images
+    setTimeout(()=> setActive(3), 60);
+});
+
 // ===== Countdown (giữ code bạn đang dùng; dưới đây là bản gọn) =====
 function tick() {
     document.querySelectorAll(".fs-countdown").forEach(el => {
