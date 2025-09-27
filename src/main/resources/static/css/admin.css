@@ -1,0 +1,104 @@
+/*SIDE BAR*/
+.sidebar {
+    width: 200px;               /* giảm chiều rộng */
+    min-height: 100vh;
+    background: linear-gradient(180deg, #0d6efd, #0a58ca);
+    color: #fff;
+    /* sticky */
+    position: sticky;
+    top: 0;
+    height: 100vh;        /* bằng chiều cao viewport */
+    overflow: auto;       /* nếu menu dài sẽ có scroll riêng */
+}
+
+.sidebar .brand {
+    font-size: 1.1rem;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.sidebar .nav-link {
+    color: #dbeafe;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;    /* padding nhỏ hơn để cân đối */
+    font-size: 0.9rem;          /* chữ nhỏ hơn một chút */
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.15);
+}
+/*END SIDE BAR*/
+
+/*FOOTER*/
+.admin-footer {
+    background: #eef2f7;               /* nền sáng hơn, hơi xanh xám */
+    border-top: 1px solid #dee2e6;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    color: #495057;                    /* chữ xám đậm hơn */
+}
+
+.admin-footer a {
+    color: #0d6efd;
+}
+
+.admin-footer a:hover {
+    text-decoration: underline;
+}
+/*END FOOTER*/
+
+/*DASHBOARD*/
+/* Nền tổng thể */
+body { background:#f6f8fb; }
+
+/* Metric cards */
+.metric{
+    border:0;
+    border-radius:1rem;
+    background:#fff;
+    box-shadow:0 6px 18px rgba(16,24,40,.06);
+    transition:transform .18s ease, box-shadow .18s ease;
+}
+.metric:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 24px rgba(16,24,40,.10);
+}
+.metric .label{ color:#6c757d; font-size:.9rem; }
+.metric .value{ font-size:1.9rem; font-weight:800; letter-spacing:.2px; }
+
+/* Màu nhận diện từng metric (viền & icon nền mờ) */
+.metric.users     { border-top:4px solid #0d6efd; position:relative; overflow:hidden; }
+.metric.products  { border-top:4px solid #198754; position:relative; overflow:hidden; }
+.metric.orders    { border-top:4px solid #ffc107; position:relative; overflow:hidden; }
+.metric.revenue   { border-top:4px solid #dc3545; position:relative; overflow:hidden; }
+
+/* chip nhỏ hiển thị trend/ghi chú */
+.metric .chip{
+    display:inline-block; padding:.25rem .5rem; border-radius:999px; font-size:.75rem;
+    background:#eef2f7; color:#495057;
+}
+
+/* Card & header */
+.card{ border:0; border-radius:1rem; box-shadow:0 6px 18px rgba(16,24,40,.06); }
+.card-header{
+    border-bottom:1px solid #eef2f7; background:linear-gradient(180deg,#ffffff,#fafbff);
+    font-weight:600;
+}
+
+/* Bảng */
+.table thead th{ white-space:nowrap; }
+.table-hover tbody tr:hover{ background:#f8fafc; }
+
+/* Badge trạng thái rõ ràng hơn */
+.badge{ font-weight:600; letter-spacing:.2px; }
+.badge.text-bg-success{ background-color:#22c55e !important; }
+.badge.text-bg-warning{ background-color:#f59e0b !important; }
+.badge.text-bg-secondary{ background-color:#94a3b8 !important; }
+
+/* Canvas chart chiều cao đẹp mắt */
+#ordersLine, #revenueBar { height: 280px !important; }
+
+/*END DASHBOARD*/
