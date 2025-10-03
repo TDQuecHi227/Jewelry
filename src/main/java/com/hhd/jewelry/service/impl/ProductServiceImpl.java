@@ -9,6 +9,7 @@ import com.hhd.jewelry.repository.CartRepository;
 import com.hhd.jewelry.repository.ProductRepository;
 import com.hhd.jewelry.repository.UserRepository;
 import com.hhd.jewelry.service.ProductService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -126,7 +127,7 @@ public class ProductServiceImpl implements ProductService {
                 newCart.setUser(user);
             }
             Product product = productRepository.findBySerialNumber(serialNumber).orElse(null);
-            CartItem cartItem = cartItemRepository.findByProduct(product).orElse(null);
+            CartItem cartItem = cartItemRepository.findCartItemByCartAndProduct(cart, product).orElse(null);
             if (cartItem == null || cartItem.getCart() != cart) {
                 CartItem newCartItem = new CartItem();
                 newCartItem.setProduct(product);
@@ -140,5 +141,10 @@ public class ProductServiceImpl implements ProductService {
                 this.cartItemRepository.save(cartItem);
             }
         }
+    }
+    @Transactional
+    @Override
+    public void RemoveProductToCart(Integer cart_id, Integer product_id) {
+        cartItemRepository.deleteByCart_CartIdAndProduct_Id(cart_id, product_id);
     }
 }

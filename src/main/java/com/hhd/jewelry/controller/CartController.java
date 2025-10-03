@@ -127,7 +127,7 @@ public class CartController {
         return res;
     }
 
-    @PostMapping("/cart/remove/{id}")
+    @GetMapping("/cart/remove/{id}")
     public String removeItem(@PathVariable("id") Integer id,
                              Authentication auth) {
         if (auth == null || !auth.isAuthenticated()) return "redirect:/login";
@@ -136,9 +136,14 @@ public class CartController {
         if (user == null) return "redirect:/cart";
         Cart cart = cartRepository.findByUser(user);
         if (cart == null || cart.getItems() == null) return "redirect:/cart";
-        cart.getItems().removeIf(ci -> Objects.equals(ci.getId(), id));
-        cartRepository.save(cart);
+        productService.RemoveProductToCart(cart.getCartId(), id);
         return "redirect:/cart";
+    }
+
+    @GetMapping("/checkout")
+    public String getCheckOut(Model model){
+
+        return "client/product/checkout";
     }
 }
 
