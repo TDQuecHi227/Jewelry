@@ -71,7 +71,7 @@ public class LoginController {
 
         try {
             User u = new User();
-            u.setFullname(form.getFullname());
+            u.setFullname(form.getFullName());
             u.setEmail(form.getEmail());
             u.setPhone(form.getPhone());
             u.setGender(form.getGender());

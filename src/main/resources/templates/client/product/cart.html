@@ -94,7 +94,7 @@
                         <div class="d-flex mb-3"><span class="text-muted">Tổng tiền</span>
                             <span class="ms-auto fw-bold text-danger fs-5" id="total" th:text="${#numbers.formatDecimal(total?:0,0,'COMMA',0,'POINT')} + ' đ'">0 đ</span></div>
                         <div class="small text-muted fst-italic mb-3">(Giá tham khảo đã bao gồm VAT)</div>
-                        <a th:href="@{/checkout/{cartid}(cartid=${cartid})}" class="btn btn-continue w-100">Tiếp tục</a>
+                        <a th:href="@{/checkout/cart/{cartid}(cartid=${cartid})}" class="btn btn-continue w-100">Tiếp tục</a>
                     </div>
                 </div>
             </div>
