@@ -4,6 +4,7 @@ import com.hhd.jewelry.entity.Cart;
 import com.hhd.jewelry.entity.CartItem;
 import com.hhd.jewelry.entity.Product;
 import com.hhd.jewelry.entity.User;
+import com.hhd.jewelry.repository.CartItemRepository;
 import com.hhd.jewelry.repository.CartRepository;
 import com.hhd.jewelry.repository.UserRepository;
 import com.hhd.jewelry.service.ProductService;
@@ -24,6 +25,7 @@ public class CartController {
     private final ProductService productService;
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
+    private final CartItemRepository  cartItemRepository;
 
     @GetMapping("/cart")
     public String  getCartPage(Model model, Authentication authentication) {
@@ -34,6 +36,7 @@ public class CartController {
         int subtotal = 0;
         int discount = 0; // tuỳ bạn tính
         int total = 0;
+        model.addAttribute("cartid", cart.getCartId());
         model.addAttribute("carts", cartItems);
         model.addAttribute("subtotal", subtotal);
         model.addAttribute("discount", discount);
@@ -140,9 +143,10 @@ public class CartController {
         return "redirect:/cart";
     }
 
-    @GetMapping("/checkout")
-    public String getCheckOut(Model model){
-
+    @GetMapping("/checkout/{id}")
+    public String getCheckOut(Model model, @PathVariable Integer id){
+        List<CartItem> cartItems = cartItemRepository.findAllByCart_CartId(id);
+        model.addAttribute("carts", cartItems);
         return "client/product/checkout";
     }
 }
