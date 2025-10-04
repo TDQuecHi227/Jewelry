@@ -1,4 +1,5 @@
-    (function(){
+import { initAddressPicker } from './addressPicker.js';
+(function(){
     // --- Cấu hình chung ---
     const VAT_RATE = 0.10;               // 10% VAT
     const SHIP_BASE = 30000;             // phí ship mặc định
@@ -108,3 +109,20 @@
     // Khởi tạo lần đầu
     recalc();
 })();
+document.addEventListener('DOMContentLoaded', () => {
+    initAddressPicker({
+        provinceEl: document.getElementById('addressProvince'),
+        wardEl:     document.getElementById('addressWard'),
+        streetEl:   document.getElementById('addressStreet'),
+        addressEl:  document.getElementById('address'),
+
+        // Không dùng group nào thì cho null
+        groupDistrict: null,
+        groupWard:     null,
+
+        // GHI TÊN vào 3 input ẨN để submit
+        provinceNameHidden: document.getElementById('provinceHidden'),
+        districtNameHidden: document.getElementById('districtHidden'),
+        wardNameHidden:     document.getElementById('wardHidden'),
+    });
+});

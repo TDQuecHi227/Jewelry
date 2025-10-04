@@ -119,7 +119,7 @@
             <div class="d-flex flex-column gap-2">
 
                 <!-- Mua ngay -->
-                <a class="btn btn-warning fw-semibold rounded-3 py-2" th:href="@{/checkout}">
+                <a class="btn btn-warning fw-semibold rounded-3 py-2" th:href="@{/checkout/{serialNumber}(serialNumber=${product.serialNumber})}">
                     Mua ngay <br>
                     <small class="fst-italic fw-normal">(Giao hàng miễn phí tận nhà hoặc nhận tại cửa hàng)</small>
                 </a>

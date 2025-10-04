@@ -150,9 +150,21 @@ public class CartController {
         return "redirect:/cart";
     }
 
-    @GetMapping("/checkout/{id}")
-    public String getCheckOut(Model model, @PathVariable Integer id){
+    @GetMapping("/checkout/cart/{id}")
+    public String getCartCheckOut(Model model, @PathVariable("id") Integer id){
         List<CartItem> cartItems = cartItemRepository.findAllByCart_CartId(id);
+        model.addAttribute("carts", cartItems);
+        return "client/product/checkout";
+    }
+    @GetMapping("/checkout/{serialNumber}")
+    public String getCheckout(Model model, @PathVariable("serialNumber") String serialNumber){
+        List<CartItem> cartItems = new ArrayList<>();
+        Product product = productService.getProductBySerialNumber(serialNumber);
+        CartItem item = new CartItem();
+        item.setProduct(product);
+        item.setQuantity(1);
+        item.setPrice(product.getPrice());
+        cartItems.add(item);
         model.addAttribute("carts", cartItems);
         return "client/product/checkout";
     }

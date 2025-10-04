@@ -54,20 +54,37 @@
 
                     <div class="mt-3">
                         <label class="form-label">Địa chỉ nhận hàng *</label>
-                        <input type="text" class="form-control mb-2" name="addressLine" placeholder="Số nhà, đường..." th:value="${receiver?.addressLine}" required>
-                        <div class="row g-3">
-                            <div class="col-md-4">
-                                <input type="text" class="form-control" name="ward" placeholder="Phường/Xã" th:value="${receiver?.ward}" required>
+
+                        <!-- Số nhà/đường -->
+                        <input id="addressStreet" type="text" class="form-control mb-2"
+                               name="addressLine" placeholder="Số nhà, đường..."
+                               th:value="${receiver?.addressLine}" required>
+
+                        <!-- Picker: Tỉnh + Phường (chỉ để chọn, KHÔNG submit trực tiếp) -->
+                        <div class="row g-3 mb-2">
+                            <div class="col-md-6">
+                                <select id="addressProvince" class="form-select" required>
+                                    <option value="" hidden>-- Chọn Tỉnh/Thành --</option>
+                                </select>
                             </div>
-                            <div class="col-md-4">
-                                <input type="text" class="form-control" name="district" placeholder="Quận/Huyện" th:value="${receiver?.district}" required>
-                            </div>
-                            <div class="col-md-4">
-                                <input type="text" class="form-control" name="province" placeholder="Tỉnh/Thành phố" th:value="${receiver?.province}" required>
+                            <div class="col-md-6">
+                                <select id="addressWard" class="form-select" required disabled>
+                                    <option value="" hidden>-- Chọn Phường/Xã --</option>
+                                </select>
                             </div>
                         </div>
-                    </div>
+<!--                        &lt;!&ndash; Chỉ 3 input ẨN để submit về server (không hiển thị -> không lặp UI) &ndash;&gt;-->
+<!--                        <input id="wardHidden"     type="hidden" name="ward"     th:value="${receiver?.ward}">-->
+<!--                        <input id="districtHidden" type="hidden" name="district" th:value="${receiver?.district}">-->
+<!--                        <input id="provinceHidden" type="hidden" name="province" th:value="${receiver?.province}">-->
 
+<!--                        &lt;!&ndash; (khuyến nghị) ẩn thêm full address nếu bạn cần ở server &ndash;&gt;-->
+                        <input id="address" type="hidden" name="fullAddress"
+                               th:value="${(receiver?.addressLine != null ? receiver.addressLine + ', ' : '') +
+                  (receiver?.ward != null ? receiver.ward + ', ' : '') +
+                  (receiver?.district != null ? receiver.district + ', ' : '') +
+                  (receiver?.province != null ? receiver.province : '')}">
+                    </div>
                     <div class="mt-3">
                         <label class="form-label">Ghi chú</label>
                         <textarea class="form-control" name="note" rows="3" placeholder="Ví dụ: giao giờ hành chính, gọi trước khi giao..." th:text="${note}"></textarea>
@@ -173,6 +190,6 @@
     </form>
 </div>
 <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script defer th:src="@{/js/checkout.js}"></script>
+<script defer type="module"  th:src="@{/js/checkout.js}"></script>
 </body>
 </html>
