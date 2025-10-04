@@ -30,7 +30,11 @@
     <div class="card card-cart shadow-sm">
         <!-- Header -->
         <div class="card-body cart-head d-flex align-items-center justify-content-between">
-            <a th:href="@{/}" class="text-decoration-none small">&larr; Quay lại</a>
+            <a href="#"
+               class="text-decoration-none small"
+               onclick="if (history.length > 1) { history.back(); } else { window.location='/' } return false;">
+                &larr; Quay lại
+            </a>
             <h5 class="fw-semibold mb-0">Giỏ Hàng</h5>
         </div>
 
@@ -90,7 +94,7 @@
                         <div class="d-flex mb-3"><span class="text-muted">Tổng tiền</span>
                             <span class="ms-auto fw-bold text-danger fs-5" id="total" th:text="${#numbers.formatDecimal(total?:0,0,'COMMA',0,'POINT')} + ' đ'">0 đ</span></div>
                         <div class="small text-muted fst-italic mb-3">(Giá tham khảo đã bao gồm VAT)</div>
-                        <a th:href="@{/checkout}" class="btn btn-continue w-100">Tiếp tục</a>
+                        <a th:href="@{/checkout/{cartid}(cartid=${cartid})}" class="btn btn-continue w-100">Tiếp tục</a>
                     </div>
                 </div>
             </div>

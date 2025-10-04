@@ -104,8 +104,8 @@
                         </div>
 
                         <!-- Items -->
-                        <div class="list-group list-group-flush mb-3">
-                            <div class="list-group-item px-0" th:each="ci : ${carts}">
+                        <div class="list-group list-group-flush mb-3" id="checkoutItems">
+                            <div class="list-group-item px-0" th:each="ci : ${carts}" th:attr="data-price=${ci.price}, data-qty=${ci.quantity}">
                                 <div class="d-flex align-items-center gap-2">
                                     <img class="prod-img"
                                          th:src="${ci.product.imageUrls != null and !ci.product.imageUrls.isEmpty() ? ci.product.imageUrls[0] : '/images/placeholder.jpg'}"
@@ -122,32 +122,44 @@
 
                         <!-- Coupon -->
                         <div class="input-group input-group-sm mb-3">
-                            <input type="text" name="coupon" class="form-control" placeholder="Nhập mã giảm giá" th:value="${coupon}">
-                            <button class="btn btn-outline-secondary" formaction="#" formmethod="post" disabled>Mã giảm giá</button>
+                            <input type="text" id="couponInput" name="coupon" class="form-control" placeholder="Nhập mã giảm giá" th:value="${coupon}">
+                            <button class="btn btn-outline-secondary" type="button" id="applyCouponBtn">Áp dụng</button>
                         </div>
 
                         <div class="d-flex mb-2">
                             <span class="text-muted">Tạm tính</span>
-                            <span class="ms-auto fw-semibold" th:text="${#numbers.formatDecimal(subtotal?:0,0,'COMMA',0,'POINT')} + ' đ'">0 đ</span>
+                            <span class="ms-auto fw-semibold" id="subtotalText"
+                                  th:text="${#numbers.formatDecimal(subtotal?:0,0,'COMMA',0,'POINT')} + ' đ'">0 đ</span>
                         </div>
                         <div class="d-flex mb-2">
                             <span class="text-muted">Giảm giá</span>
-                            <span class="ms-auto fw-semibold" th:text="${#numbers.formatDecimal(discount?:0,0,'COMMA',0,'POINT')} + ' đ'">0 đ</span>
+                            <span class="ms-auto fw-semibold" id="discountText"
+                                  th:text="${#numbers.formatDecimal(discount?:0,0,'COMMA',0,'POINT')} + ' đ'">0 đ</span>
                         </div>
                         <div class="d-flex mb-2">
                             <span class="text-muted">Phí vận chuyển</span>
-                            <span class="ms-auto fw-semibold" th:text="${#numbers.formatDecimal(shippingFee?:0,0,'COMMA',0,'POINT')} + ' đ'">0 đ</span>
+                            <span class="ms-auto fw-semibold" id="shippingText"
+                                  th:text="${#numbers.formatDecimal(shippingFee?:0,0,'COMMA',0,'POINT')} + ' đ'">0 đ</span>
                         </div>
                         <div class="d-flex mb-3">
                             <span class="text-muted">Thuế/VAT</span>
-                            <span class="ms-auto fw-semibold" th:text="${#numbers.formatDecimal(tax?:0,0,'COMMA',0,'POINT')} + ' đ'">0 đ</span>
+                            <span class="ms-auto fw-semibold" id="taxText"
+                                  th:text="${#numbers.formatDecimal(tax?:0,0,'COMMA',0,'POINT')} + ' đ'">0 đ</span>
                         </div>
 
                         <div class="d-flex mb-2">
                             <span class="fw-semibold">Tổng thanh toán</span>
-                            <span class="ms-auto fw-bold text-danger fs-5"
+                            <span class="ms-auto fw-bold text-danger fs-5" id="totalText"
                                   th:text="${#numbers.formatDecimal(total?:0,0,'COMMA',0,'POINT')} + ' đ'">0 đ</span>
                         </div>
+
+<!--                        &lt;!&ndash; (Tuỳ chọn) đưa số liệu thật vào input ẩn để submit &ndash;&gt;-->
+<!--                        <input type="hidden" name="subtotal" id="subtotalVal" th:value="${subtotal?:0}">-->
+<!--                        <input type="hidden" name="discount" id="discountVal" th:value="${discount?:0}">-->
+<!--                        <input type="hidden" name="shippingFee" id="shippingVal" th:value="${shippingFee?:0}">-->
+<!--                        <input type="hidden" name="tax" id="taxVal" th:value="${tax?:0}">-->
+<!--                        <input type="hidden" name="total" id="totalVal" th:value="${total?:0}">-->
+
                         <div class="small small-muted fst-italic mb-3">(Giá đã bao gồm VAT nếu có)</div>
 
                         <button type="submit" class="btn btn-pay w-100">
@@ -160,7 +172,7 @@
 
     </form>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script defer th:src="@{/js/checkout.js}"></script>
 </body>
 </html>
