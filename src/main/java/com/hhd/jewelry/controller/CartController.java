@@ -144,13 +144,16 @@ public class CartController {
     }
 
     @GetMapping("/checkout/cart/{id}")
-    public String getCartCheckOut(Model model, @PathVariable("id") Integer id){
+    public String getCartCheckOut(Model model, @PathVariable("id") Integer id, Authentication auth){
+        User user  = userRepository.findByEmail(auth.getName()).orElse(null);
         List<CartItem> cartItems = cartItemRepository.findAllByCart_CartId(id);
         model.addAttribute("carts", cartItems);
+        model.addAttribute("user", user);
         return "client/product/checkout";
     }
     @GetMapping("/checkout/{serialNumber}")
-    public String getCheckout(Model model, @PathVariable("serialNumber") String serialNumber){
+    public String getCheckout(Model model, @PathVariable("serialNumber") String serialNumber, Authentication auth){
+        if  (auth != null && auth.isAuthenticated()) {model.addAttribute("user", userRepository.findByEmail(auth.getName()).orElse(null));};
         List<CartItem> cartItems = new ArrayList<>();
         Product product = productService.getProductBySerialNumber(serialNumber);
         CartItem item = new CartItem();
