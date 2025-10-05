@@ -136,7 +136,10 @@
       <label class="form-label mt-3" for="password">Mật khẩu</label>
       <input id="password" type="password" class="form-control mb-1"
              th:field="*{password}" autocomplete="new-password"
-             minlength="8" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$" required />
+             minlength="8"
+             pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"
+             required>
+
       <div class="form-text">Tối thiểu 8 ký tự, gồm chữ hoa, chữ thường, số.</div>
       <div class="invalid-feedback">Mật khẩu chưa đạt yêu cầu.</div>
       <div class="valid-feedback">Mật khẩu mạnh.</div>
