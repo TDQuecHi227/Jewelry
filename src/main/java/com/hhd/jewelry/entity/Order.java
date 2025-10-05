@@ -31,10 +31,6 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> items;
 
-    public enum ShippingMethod {
-        DELIVERY, STORE_PICKUP
-    }
-
     public enum Status {
         PENDING, PAID, SHIPPING, COMPLETED, CANCELLED
     }
