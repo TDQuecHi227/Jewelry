@@ -1,9 +1,7 @@
 package com.hhd.jewelry.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -21,6 +19,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @ToString.Exclude @EqualsAndHashCode.Exclude
     private User user;
 
     @Enumerated(EnumType.STRING)
@@ -29,6 +28,7 @@ public class Order {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @ToString.Exclude @EqualsAndHashCode.Exclude
     private List<OrderItem> items;
 
     public enum ShippingMethod {

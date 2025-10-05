@@ -45,10 +45,12 @@ public class User {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "user")
+    @ToString.Exclude @EqualsAndHashCode.Exclude
     private List<Order> orders;
 
     @ManyToOne
     @JoinColumn(name = "managed_by")
+    @ToString.Exclude @EqualsAndHashCode.Exclude
     private Vendor manager;
 
     @OneToOne(mappedBy = "user")
