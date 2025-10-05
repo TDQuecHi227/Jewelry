@@ -1,5 +1,6 @@
 package com.hhd.jewelry.controller;
 
+import com.hhd.jewelry.DTO.CheckoutDTO;
 import com.hhd.jewelry.entity.Cart;
 import com.hhd.jewelry.entity.CartItem;
 import com.hhd.jewelry.entity.Product;
@@ -8,12 +9,15 @@ import com.hhd.jewelry.repository.CartItemRepository;
 import com.hhd.jewelry.repository.CartRepository;
 import com.hhd.jewelry.repository.UserRepository;
 import com.hhd.jewelry.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -164,5 +168,11 @@ public class CartController {
         model.addAttribute("carts", cartItems);
         return "client/product/checkout";
     }
+
+    @PostMapping("/checkout/confirm")
+    public String confirmCheckout(@Valid @ModelAttribute CheckoutDTO form, BindingResult errors, Model model, Authentication auth){
+        User user = userRepository.findByEmail(auth.getName()).orElse(null);
+    }
+
 }
 
