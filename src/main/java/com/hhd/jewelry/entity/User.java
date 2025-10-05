@@ -49,7 +49,7 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "managed_by")
-    private Vendor manager;
+    private Manager manager;
 
     @OneToOne(mappedBy = "user")
     @ToString.Exclude
@@ -57,7 +57,7 @@ public class User {
     private Cart  cart;
 
     public enum Role {
-        USER, ADMIN, SHIPPER, MANAGER, GUEST
+        USER, ADMIN, MANAGER, GUEST
     }
 
 }
