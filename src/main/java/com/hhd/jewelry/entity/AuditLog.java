@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class AuditLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long logId;
+    private Integer logId;
 
     @ManyToOne
     @JoinColumn(name = "admin_id")

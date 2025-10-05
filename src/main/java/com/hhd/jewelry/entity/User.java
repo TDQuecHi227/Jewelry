@@ -50,11 +50,9 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "managed_by")
-    private Vendor manager;
+    private Manager manager;
 
     public enum Role {
-        USER, ADMIN, SHIPPER, MANAGER, GUEST
+        USER, ADMIN, MANAGER, GUEST
     }
-
-
 }
