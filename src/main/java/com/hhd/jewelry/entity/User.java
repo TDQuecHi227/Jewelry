@@ -1,9 +1,7 @@
 package com.hhd.jewelry.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,8 +17,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "full_name", nullable = false)
-    private String fullName;
+    @Column(nullable = false)
+    private String fullname;
+
     @Column(unique = true)
     private String phone;
 
@@ -52,7 +51,13 @@ public class User {
     @JoinColumn(name = "managed_by")
     private Manager manager;
 
+    @OneToOne(mappedBy = "user")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Cart  cart;
+
     public enum Role {
         USER, ADMIN, MANAGER, GUEST
     }
+
 }

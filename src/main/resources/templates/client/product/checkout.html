@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Thanh Toán</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <style>
+        body{background:#f5f6f8}
+        .checkout-wrap{max-width:1100px;margin:30px auto}
+        .card-ck{border-radius:14px;overflow:hidden}
+        .card-ck .card-header{background:#fafafa}
+        .prod-img{width:64px;height:64px;object-fit:contain;border:1px solid #eee;border-radius:8px;background:#fff}
+        .price{font-weight:700;color:#d4a017}
+        .totals-box{background:#fafafa;border-radius:12px;padding:16px}
+        .btn-pay{height:50px;border-radius:10px;background:#003366;color:#fff;font-weight:600}
+        .btn-pay:hover{opacity:.9}
+        .small-muted{color:#6b7280}
+        .hr-light{border-color:#eee;opacity:1}
+    </style>
+</head>
+<body>
+
+<header th:replace="client/layout/header :: header"></header>
+
+<div class="checkout-wrap">
+    <form class="card card-ck shadow-sm" method="post" th:action="@{/checkout/confirm}">
+        <div class="card-header px-4 py-3 d-flex align-items-center justify-content-between">
+            <a th:href="@{/cart}" class="text-decoration-none small">&larr; Quay lại giỏ hàng</a>
+            <h5 class="fw-semibold mb-0">Thanh Toán</h5>
+        </div>
+
+        <!-- CSRF -->
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+        <div class="card-body px-4 px-md-4">
+            <div class="row g-4">
+                <!-- THÔNG TIN NGƯỜI NHẬN -->
+                <div class="col-12 col-lg-7">
+                    <div class="mb-3">
+                        <label class="form-label">Họ và tên *</label>
+                        <input type="text" class="form-control" name="receiverName" th:value="${receiver?.name}" required>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Số điện thoại *</label>
+                            <input type="tel" class="form-control" name="receiverPhone" th:value="${receiver?.phone}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" name="receiverEmail" th:value="${receiver?.email}">
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <label class="form-label">Địa chỉ nhận hàng *</label>
+
+                        <!-- Số nhà/đường -->
+                        <input id="addressStreet" type="text" class="form-control mb-2"
+                               name="addressLine" placeholder="Số nhà, đường..."
+                               th:value="${receiver?.addressLine}" required>
+
+                        <!-- Picker: Tỉnh + Phường (chỉ để chọn, KHÔNG submit trực tiếp) -->
+                        <div class="row g-3 mb-2">
+                            <div class="col-md-6">
+                                <select id="addressProvince" class="form-select" required>
+                                    <option value="" hidden>-- Chọn Tỉnh/Thành --</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <select id="addressWard" class="form-select" required disabled>
+                                    <option value="" hidden>-- Chọn Phường/Xã --</option>
+                                </select>
+                            </div>
+                        </div>
+<!--                        &lt;!&ndash; Chỉ 3 input ẨN để submit về server (không hiển thị -> không lặp UI) &ndash;&gt;-->
+<!--                        <input id="wardHidden"     type="hidden" name="ward"     th:value="${receiver?.ward}">-->
+<!--                        <input id="districtHidden" type="hidden" name="district" th:value="${receiver?.district}">-->
+<!--                        <input id="provinceHidden" type="hidden" name="province" th:value="${receiver?.province}">-->
+
+<!--                        &lt;!&ndash; (khuyến nghị) ẩn thêm full address nếu bạn cần ở server &ndash;&gt;-->
+                        <input id="address" type="hidden" name="fullAddress"
+                               th:value="${(receiver?.addressLine != null ? receiver.addressLine + ', ' : '') +
+                  (receiver?.ward != null ? receiver.ward + ', ' : '') +
+                  (receiver?.district != null ? receiver.district + ', ' : '') +
+                  (receiver?.province != null ? receiver.province : '')}">
+                    </div>
+                    <div class="mt-3">
+                        <label class="form-label">Ghi chú</label>
+                        <textarea class="form-control" name="note" rows="3" placeholder="Ví dụ: giao giờ hành chính, gọi trước khi giao..." th:text="${note}"></textarea>
+                    </div>
+
+                    <hr class="my-4 hr-light">
+
+                    <!-- PHƯƠNG THỨC THANH TOÁN -->
+                    <div>
+                        <div class="form-label fw-semibold mb-2">Phương thức thanh toán</div>
+                        <div class="list-group">
+                            <label class="list-group-item d-flex align-items-center">
+                                <input class="form-check-input me-2" type="radio" name="paymentMethod" value="COD" th:checked="${paymentMethod == null or paymentMethod == 'COD'}">
+                                <i class="bi bi-truck me-2"></i> Thanh toán khi nhận hàng (COD)
+                            </label>
+                            <label class="list-group-item d-flex align-items-center">
+                                <input class="form-check-input me-2" type="radio" name="paymentMethod" value="VNPAY" th:checked="${paymentMethod}=='VNPAY'">
+                                <i class="bi bi-credit-card me-2"></i> Thanh toán qua VNPAY
+                            </label>
+                            <label class="list-group-item d-flex align-items-center">
+                                <input class="form-check-input me-2" type="radio" name="paymentMethod" value="MOMO" th:checked="${paymentMethod}=='MOMO'">
+                                <i class="bi bi-phone me-2"></i> Thanh toán qua MoMo
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TÓM TẮT ĐƠN HÀNG -->
+                <div class="col-12 col-lg-5">
+                    <div class="totals-box">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <div class="fw-semibold">Tóm tắt đơn hàng</div>
+                            <a th:href="@{/cart}" class="small small-muted text-decoration-none">Chỉnh sửa giỏ hàng</a>
+                        </div>
+
+                        <!-- Items -->
+                        <div class="list-group list-group-flush mb-3" id="checkoutItems">
+                            <div class="list-group-item px-0" th:each="ci : ${carts}" th:attr="data-price=${ci.price}, data-qty=${ci.quantity}">
+                                <div class="d-flex align-items-center gap-2">
+                                    <img class="prod-img"
+                                         th:src="${ci.product.imageUrls != null and !ci.product.imageUrls.isEmpty() ? ci.product.imageUrls[0] : '/images/placeholder.jpg'}"
+                                         th:alt="${ci.product.getDisplayName()}"/>
+                                    <div class="flex-grow-1">
+                                        <div class="fw-semibold" th:text="${ci.product.name}">Tên sản phẩm</div>
+                                        <div class="small small-muted">SL: <span th:text="${ci.quantity}">1</span></div>
+                                    </div>
+                                    <div class="price" th:text="${#numbers.formatDecimal(ci.price * ci.quantity,0,'COMMA',0,'POINT')} + ' đ'">0 đ</div>
+                                </div>
+                            </div>
+                            <div th:if="${#lists.isEmpty(carts)}" class="text-center text-muted py-3">Giỏ hàng trống</div>
+                        </div>
+
+                        <!-- Coupon -->
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" id="couponInput" name="coupon" class="form-control" placeholder="Nhập mã giảm giá" th:value="${coupon}">
+                            <button class="btn btn-outline-secondary" type="button" id="applyCouponBtn">Áp dụng</button>
+                        </div>
+
+                        <div class="d-flex mb-2">
+                            <span class="text-muted">Tạm tính</span>
+                            <span class="ms-auto fw-semibold" id="subtotalText"
+                                  th:text="${#numbers.formatDecimal(subtotal?:0,0,'COMMA',0,'POINT')} + ' đ'">0 đ</span>
+                        </div>
+                        <div class="d-flex mb-2">
+                            <span class="text-muted">Giảm giá</span>
+                            <span class="ms-auto fw-semibold" id="discountText"
+                                  th:text="${#numbers.formatDecimal(discount?:0,0,'COMMA',0,'POINT')} + ' đ'">0 đ</span>
+                        </div>
+                        <div class="d-flex mb-2">
+                            <span class="text-muted">Phí vận chuyển</span>
+                            <span class="ms-auto fw-semibold" id="shippingText"
+                                  th:text="${#numbers.formatDecimal(shippingFee?:0,0,'COMMA',0,'POINT')} + ' đ'">0 đ</span>
+                        </div>
+                        <div class="d-flex mb-3">
+                            <span class="text-muted">Thuế/VAT</span>
+                            <span class="ms-auto fw-semibold" id="taxText"
+                                  th:text="${#numbers.formatDecimal(tax?:0,0,'COMMA',0,'POINT')} + ' đ'">0 đ</span>
+                        </div>
+
+                        <div class="d-flex mb-2">
+                            <span class="fw-semibold">Tổng thanh toán</span>
+                            <span class="ms-auto fw-bold text-danger fs-5" id="totalText"
+                                  th:text="${#numbers.formatDecimal(total?:0,0,'COMMA',0,'POINT')} + ' đ'">0 đ</span>
+                        </div>
+
+<!--                        &lt;!&ndash; (Tuỳ chọn) đưa số liệu thật vào input ẩn để submit &ndash;&gt;-->
+<!--                        <input type="hidden" name="subtotal" id="subtotalVal" th:value="${subtotal?:0}">-->
+<!--                        <input type="hidden" name="discount" id="discountVal" th:value="${discount?:0}">-->
+<!--                        <input type="hidden" name="shippingFee" id="shippingVal" th:value="${shippingFee?:0}">-->
+<!--                        <input type="hidden" name="tax" id="taxVal" th:value="${tax?:0}">-->
+<!--                        <input type="hidden" name="total" id="totalVal" th:value="${total?:0}">-->
+
+                        <div class="small small-muted fst-italic mb-3">(Giá đã bao gồm VAT nếu có)</div>
+
+                        <button type="submit" class="btn btn-pay w-100">
+                            Xác nhận & Thanh toán
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script defer type="module"  th:src="@{/js/checkout.js}"></script>
+</body>
+</html>

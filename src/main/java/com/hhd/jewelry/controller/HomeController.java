@@ -63,7 +63,7 @@ public class HomeController {
 
         if (!model.containsAttribute("form")) {
             ProfileDto form = new ProfileDto();
-            form.setFullname(u.getFullName());
+            form.setFullname(u.getFullname());
             form.setEmail(u.getEmail());
             form.setPhone(u.getPhone());
             form.setGender(u.getGender());
@@ -93,7 +93,7 @@ public class HomeController {
         if (br.hasErrors()) return "client/homepage/account";
 
         // map & lưu
-        u.setFullName(form.getFullname());
+        u.setFullname(form.getFullname());
         u.setEmail(form.getEmail());
         u.setPhone(form.getPhone());
         u.setGender(form.getGender());

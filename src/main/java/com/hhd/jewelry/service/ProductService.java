@@ -18,4 +18,6 @@ public interface ProductService {
     void delete(Product product);
     void deleteAll();
     void resetAutoIncrement();
+    void AddProductToCart(String email, String serialNumber);
+    void RemoveProductToCart(Integer cart_id, Integer product_id);
 }
