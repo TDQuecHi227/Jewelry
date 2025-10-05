@@ -19,9 +19,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
-    private String fullname;
-
+    @Column(name = "full_name", nullable = false)
+    private String fullName;
     @Column(unique = true)
     private String phone;
 
