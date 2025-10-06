@@ -43,7 +43,7 @@ public class RegisterDto {
 
     @NotBlank(message = "Vui lòng xác nhận mật khẩu")
     private String confirmPassword;
-
+    @NotBlank private String otp;
     // Rule khớp mật khẩu (tùy chọn nhưng hữu ích)
     @AssertTrue(message = "Mật khẩu nhập lại chưa khớp")
     public boolean isPasswordMatch() {

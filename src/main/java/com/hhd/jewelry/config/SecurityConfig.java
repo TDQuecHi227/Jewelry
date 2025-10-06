@@ -45,7 +45,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/",
                                 "/login",            // MỞ RÕ
-                                "/register", "/forgot-password",
+                                "/register","/register/**", "/forgot-password",
                                 "/css/**", "/js/**", "/images/**", "/cart/**"
                         ).permitAll()
                         .requestMatchers("/checkout/**", "/orders/**", "/account/**").authenticated()
