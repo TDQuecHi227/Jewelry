@@ -231,8 +231,7 @@ public class CartController {
 
         orderItemRepository.saveAll(items);
         order.setItems(items); // để khi cần trả về đã có danh sách
-
-        int rows = cartItemRepository.deleteByCart_CartId(cart.getCartId());
+        cartItemRepository.deleteByCart_CartId(cart.getCartId());
         return "redirect:/cart";
     }
 }
