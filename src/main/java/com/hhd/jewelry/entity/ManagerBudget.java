@@ -9,18 +9,18 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "vendor_budgets")
+@Table(name = "manager_budgets")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class VendorBudget {
+public class ManagerBudget {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "vendor_id", nullable = false)
-    private Vendor vendor;
+    @JoinColumn(name = "manager_id", nullable = false)
+    private Manager manager;
 
     @Column(nullable = false)
     private BigDecimal revenue;
