@@ -5,6 +5,7 @@ import com.hhd.jewelry.entity.CartItem;
 import com.hhd.jewelry.entity.Product;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -16,6 +17,4 @@ public interface CartItemRepository extends JpaRepository<CartItem,Integer> {
     List<CartItem> findAllByCart_CartId(Integer cartCartId);
     @Transactional
     void deleteByCart_CartIdAndProduct_Id(Integer cart_id,  Integer product_id);
-    @Transactional
-    int deleteByCart_CartId(Integer id);
 }

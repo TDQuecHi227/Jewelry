@@ -7,8 +7,6 @@ import com.hhd.jewelry.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -153,6 +151,7 @@ public class CartController {
         List<CartItem> cartItems = cartItemRepository.findAllByCart_CartId(id);
         model.addAttribute("carts", cartItems);
         model.addAttribute("user", user);
+        model.addAttribute("cartId", id);
         return "client/product/checkout";
     }
     @GetMapping("/checkout/{serialNumber}")
@@ -166,12 +165,13 @@ public class CartController {
         item.setPrice(product.getPrice());
         cartItems.add(item);
         model.addAttribute("carts", cartItems);
+        model.addAttribute("serialNumber", serialNumber);
         return "client/product/checkout";
     }
 
     @PostMapping("/checkout/confirm")
     @Transactional
-    public String confirmCheckout(@Valid @ModelAttribute CheckoutDTO form, BindingResult errors, Model model, Authentication auth){
+    public String confirmCheckout(@Valid @ModelAttribute CheckoutDTO form, BindingResult errors, Model model, Authentication auth, @ModelAttribute("carts") List<CartItem> carts){
         // 1) Validate đúng các field trên form
         if (errors.hasErrors()) {
             // Bind lại vài biến view bạn đang dùng để render lại trang
@@ -198,41 +198,45 @@ public class CartController {
         order.setCreatedAt(LocalDateTime.now());
         orderRepository.save(order); // cần id
 
-        // 5) Lấy giỏ hàng của user → tạo OrderItem
-        Cart cart = cartRepository.findByUser(user);
-
-        if (cart.getItems() == null || cart.getItems().isEmpty()) {
-            throw new IllegalStateException("Giỏ hàng trống");
-        }
-
         List<OrderItem> items = new ArrayList<>();
-        for (CartItem ci : cart.getItems()) {
-            // Giả định CartItem có getProduct() và getQuantity()
-            var product = ci.getProduct();
-            int qty = Math.max(0, ci.getQuantity());
-            if (qty == 0) continue;
+//        thanh toán sản phẩm lẻ
+        if (form.getSerialNumber() != null && !form.getSerialNumber().isEmpty()) {
+            Product product = productService.getProductBySerialNumber(form.getSerialNumber());
+            if (product == null) throw new IllegalStateException("Sản phẩm không tồn tại");
 
             OrderItem oi = new OrderItem();
             oi.setOrder(order);
             oi.setProduct(product);
-            oi.setQuantity(qty);
-
-            // totalPrice = đơn giá * SL
-            // Nếu giá trong Product: dùng product.getPrice()
-            BigDecimal unitPrice = BigDecimal.valueOf(product.getPrice() != null ? product.getPrice() : 0);
-            oi.setTotalPrice(unitPrice.multiply(BigDecimal.valueOf(qty)));
-
+            oi.setQuantity(1);
+            oi.setTotalPrice(BigDecimal.valueOf(product.getPrice()));
             items.add(oi);
         }
 
-        if (items.isEmpty()) {
-            throw new IllegalStateException("Không có sản phẩm hợp lệ trong giỏ");
+//        Thanh toán toàn giỏ hàng
+        else if (form.getCartId() != null) {
+            Cart cart = cartRepository.findById(form.getCartId()).orElse(null);
+            if (cart == null || cart.getItems().isEmpty())
+                throw new IllegalStateException("Giỏ hàng trống");
+
+            for (CartItem ci : cart.getItems()) {
+                Product product = ci.getProduct();
+                int qty = Math.max(1, ci.getQuantity());
+                OrderItem oi = new OrderItem();
+                oi.setOrder(order);
+                oi.setProduct(product);
+                oi.setQuantity(qty);
+                oi.setTotalPrice(BigDecimal.valueOf(product.getPrice()).multiply(BigDecimal.valueOf(qty)));
+                items.add(oi);
+            }
+            cart.getItems().clear();
+            cartRepository.save(cart);
         }
 
+        if (items.isEmpty()) throw new IllegalStateException("Không có sản phẩm hợp lệ");
         orderItemRepository.saveAll(items);
-        order.setItems(items); // để khi cần trả về đã có danh sách
-        cartItemRepository.deleteByCart_CartId(cart.getCartId());
-        return "redirect:/cart";
+        order.setItems(items);
+
+        return "redirect:/";
     }
 }
 
