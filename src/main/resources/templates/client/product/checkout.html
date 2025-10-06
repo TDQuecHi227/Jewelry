@@ -39,16 +39,16 @@
                 <div class="col-12 col-lg-7">
                     <div class="mb-3">
                         <label class="form-label">Họ và tên *</label>
-                        <input type="text" class="form-control" name="receiverName" th:value="${receiver?.name}" required>
+                        <input type="text" class="form-control" name="receiverName" th:value="${receiver?.name} ?: ${user.getFullName()}" required>
                     </div>
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label">Số điện thoại *</label>
-                            <input type="tel" class="form-control" name="receiverPhone" th:value="${receiver?.phone}" required>
+                            <input type="tel" class="form-control" name="receiverPhone" th:value="${receiver?.phone} ?: ${user.getPhone()}" required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Email</label>
-                            <input type="email" class="form-control" name="receiverEmail" th:value="${receiver?.email}">
+                            <input type="email" class="form-control" name="receiverEmail" th:value="${receiver?.email} ?: ${user.getEmail()}">
                         </div>
                     </div>
 
@@ -73,10 +73,10 @@
                                 </select>
                             </div>
                         </div>
-<!--                        &lt;!&ndash; Chỉ 3 input ẨN để submit về server (không hiển thị -> không lặp UI) &ndash;&gt;-->
-<!--                        <input id="wardHidden"     type="hidden" name="ward"     th:value="${receiver?.ward}">-->
-<!--                        <input id="districtHidden" type="hidden" name="district" th:value="${receiver?.district}">-->
-<!--                        <input id="provinceHidden" type="hidden" name="province" th:value="${receiver?.province}">-->
+                        <!-- Chỉ 3 input ẨN để submit về server (không hiển thị -> không lặp UI) -->
+                        <input id="wardHidden"     type="hidden" name="ward"     th:value="${receiver?.ward}">
+                        <input id="districtHidden" type="hidden" name="district" th:value="${receiver?.district}">
+                        <input id="provinceHidden" type="hidden" name="province" th:value="${receiver?.province}">
 
 <!--                        &lt;!&ndash; (khuyến nghị) ẩn thêm full address nếu bạn cần ở server &ndash;&gt;-->
                         <input id="address" type="hidden" name="fullAddress"

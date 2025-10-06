@@ -18,7 +18,7 @@ public class User {
     private Integer id;
 
     @Column(nullable = false)
-    private String fullname;
+    private String fullName;
 
     @Column(unique = true)
     private String phone;
@@ -45,10 +45,12 @@ public class User {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "user")
+    @ToString.Exclude @EqualsAndHashCode.Exclude
     private List<Order> orders;
 
     @ManyToOne
     @JoinColumn(name = "managed_by")
+    @ToString.Exclude @EqualsAndHashCode.Exclude
     private Manager manager;
 
     @OneToOne(mappedBy = "user")

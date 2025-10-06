@@ -1,9 +1,7 @@
 package com.hhd.jewelry.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -20,10 +18,12 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
+    @ToString.Exclude @EqualsAndHashCode.Exclude
     private Order order;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @ToString.Exclude @EqualsAndHashCode.Exclude
     private Product product;
 
     private int quantity;

@@ -1,21 +1,22 @@
 package com.hhd.jewelry.controller;
 
-import com.hhd.jewelry.entity.Cart;
-import com.hhd.jewelry.entity.CartItem;
-import com.hhd.jewelry.entity.Product;
-import com.hhd.jewelry.entity.User;
-import com.hhd.jewelry.repository.CartItemRepository;
-import com.hhd.jewelry.repository.CartRepository;
-import com.hhd.jewelry.repository.UserRepository;
+import com.hhd.jewelry.DTO.CheckoutDTO;
+import com.hhd.jewelry.entity.*;
+import com.hhd.jewelry.repository.*;
 import com.hhd.jewelry.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -25,6 +26,9 @@ public class CartController {
     private final ProductService productService;
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
+    private final AddressRepository addressRepository;
+    private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
     private final CartItemRepository  cartItemRepository;
 
     @GetMapping("/cart")
@@ -144,13 +148,16 @@ public class CartController {
     }
 
     @GetMapping("/checkout/cart/{id}")
-    public String getCartCheckOut(Model model, @PathVariable("id") Integer id){
+    public String getCartCheckOut(Model model, @PathVariable("id") Integer id, Authentication auth){
+        User user  = userRepository.findByEmail(auth.getName()).orElse(null);
         List<CartItem> cartItems = cartItemRepository.findAllByCart_CartId(id);
         model.addAttribute("carts", cartItems);
+        model.addAttribute("user", user);
         return "client/product/checkout";
     }
     @GetMapping("/checkout/{serialNumber}")
-    public String getCheckout(Model model, @PathVariable("serialNumber") String serialNumber){
+    public String getCheckout(Model model, @PathVariable("serialNumber") String serialNumber, Authentication auth){
+        if  (auth != null && auth.isAuthenticated()) {model.addAttribute("user", userRepository.findByEmail(auth.getName()).orElse(null));};
         List<CartItem> cartItems = new ArrayList<>();
         Product product = productService.getProductBySerialNumber(serialNumber);
         CartItem item = new CartItem();
@@ -160,6 +167,72 @@ public class CartController {
         cartItems.add(item);
         model.addAttribute("carts", cartItems);
         return "client/product/checkout";
+    }
+
+    @PostMapping("/checkout/confirm")
+    @Transactional
+    public String confirmCheckout(@Valid @ModelAttribute CheckoutDTO form, BindingResult errors, Model model, Authentication auth){
+        // 1) Validate đúng các field trên form
+        if (errors.hasErrors()) {
+            // Bind lại vài biến view bạn đang dùng để render lại trang
+            model.addAttribute("coupon", form.getCoupon());
+            model.addAttribute("paymentMethod", form.getPaymentMethod());
+            model.addAttribute("receiver", form);
+            return "client/product/checkout";
+        }
+        User user = userRepository.findByEmail(auth.getName()).orElse(null);
+        Address address  = new Address();
+        address.setUser(user);
+        address.setReceiverName(form.getReceiverName());
+        address.setPhone(form.getReceiverPhone());
+        address.setAddressLine(form.getAddressLine());
+        address.setCity(form.getProvince());
+        address.setDistrict(form.getDistrict());
+        address.setWard(form.getWard());
+        address.setIsDefault(false);
+        addressRepository.save(address);
+
+        Order order = new Order();
+        order.setUser(user);
+        order.setStatus(Order.Status.PENDING);
+        order.setCreatedAt(LocalDateTime.now());
+        orderRepository.save(order); // cần id
+
+        // 5) Lấy giỏ hàng của user → tạo OrderItem
+        Cart cart = cartRepository.findByUser(user);
+
+        if (cart.getItems() == null || cart.getItems().isEmpty()) {
+            throw new IllegalStateException("Giỏ hàng trống");
+        }
+
+        List<OrderItem> items = new ArrayList<>();
+        for (CartItem ci : cart.getItems()) {
+            // Giả định CartItem có getProduct() và getQuantity()
+            var product = ci.getProduct();
+            int qty = Math.max(0, ci.getQuantity());
+            if (qty == 0) continue;
+
+            OrderItem oi = new OrderItem();
+            oi.setOrder(order);
+            oi.setProduct(product);
+            oi.setQuantity(qty);
+
+            // totalPrice = đơn giá * SL
+            // Nếu giá trong Product: dùng product.getPrice()
+            BigDecimal unitPrice = BigDecimal.valueOf(product.getPrice() != null ? product.getPrice() : 0);
+            oi.setTotalPrice(unitPrice.multiply(BigDecimal.valueOf(qty)));
+
+            items.add(oi);
+        }
+
+        if (items.isEmpty()) {
+            throw new IllegalStateException("Không có sản phẩm hợp lệ trong giỏ");
+        }
+
+        orderItemRepository.saveAll(items);
+        order.setItems(items); // để khi cần trả về đã có danh sách
+        cartItemRepository.deleteByCart_CartId(cart.getCartId());
+        return "redirect:/cart";
     }
 }
 
