@@ -7,6 +7,8 @@ import lombok.Data;
 
 @Data
 public class CheckoutDTO {
+    private String serialNumber;  // nếu != null thì thanh toán sản phẩm lẻ
+    private Integer cartId;// nếu != null thì thanh toán giỏ
     @NotBlank(message = "Họ tên bắt buộc")
     private String receiverName;
 
