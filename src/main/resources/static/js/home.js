@@ -14,7 +14,7 @@ document.addEventListener('click', function(e){
     const form = btn.closest('form');
     e.preventDefault();
 
-    // Lấy URL add + thêm ajax = 1
+    // Lấy URL add + thêm ajax=1
     const url = form.getAttribute('action') + '?ajax=1';
     const csrfName = form.querySelector('input[type="hidden"]').getAttribute('name');
     const csrfVal  = form.querySelector('input[type="hidden"]').value;
