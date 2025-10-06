@@ -16,6 +16,7 @@ public class CurrentUserAdvice {
         if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getPrincipal())) {
             return null;
         }
+        // auth.getName() chính là "username" dùng để login (email)
         return repo.findByEmail(auth.getName()).orElse(null);
     }
 }

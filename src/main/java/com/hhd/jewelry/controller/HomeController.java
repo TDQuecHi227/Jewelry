@@ -2,9 +2,8 @@ package com.hhd.jewelry.controller;
 
 import com.hhd.jewelry.entity.Category;
 import com.hhd.jewelry.entity.Product;
-import com.hhd.jewelry.entity.ViewedProduct;
-import com.hhd.jewelry.entity.Collection;
-import com.hhd.jewelry.service.*;
+import com.hhd.jewelry.service.CategoryService;
+import com.hhd.jewelry.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import com.hhd.jewelry.DTO.ProfileDto;
 import com.hhd.jewelry.entity.User;
@@ -20,6 +19,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Controller
@@ -29,31 +31,14 @@ public class HomeController {
     private final ProductService productService;
     private final CategoryService categoryService;
     private final UserRepository userRepository;
-    private final CollectionService collectionService;
-    private final UserService userService;
-    private final ViewedProductService viewedProductService;
 
     @GetMapping("/")
-    public String home(Model model, Authentication authentication) {
+    public String home(Model model) {
         List<Product> products = productService.getAllProducts();
         List<Category> categories = categoryService.getAllCategories();
-        List<Collection> collections = collectionService.getAllCollections();
-
-        if (authentication != null && authentication.isAuthenticated()) {
-            User user = userService.getByEmail(authentication.getName()).orElse(null);
-            List<ViewedProduct> viewed = viewedProductService.getViewedProductsByUser(user);
-
-            if (!viewed.isEmpty()) {
-                List<Product> productsViewed = viewed.stream()
-                        .map(ViewedProduct::getProduct)
-                        .toList();
-                model.addAttribute("productsViewed", productsViewed);
-            }
-        }
 
         model.addAttribute("products", products);
         model.addAttribute("categories", categories);
-        model.addAttribute("collections", collections);
 
         return "client/homepage/home";
     }

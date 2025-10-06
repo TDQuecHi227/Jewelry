@@ -7,7 +7,6 @@ import java.util.Optional;
 
 public interface CollectionService {
     Collection getCollectionByName(String collectionName);
-    List<Collection> getAllCollections();
     void save(Collection collection);
     void delete(Collection collection);
 }

@@ -5,7 +5,6 @@ import com.hhd.jewelry.repository.CollectionRepository;
 import com.hhd.jewelry.service.CollectionService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,11 +18,6 @@ public class CollectionServiceImpl implements CollectionService {
     @Override
     public Collection getCollectionByName(String collectionName) {
         return collectionRepository.findByName(collectionName).orElse(null);
-    }
-
-    @Override
-    public List<Collection> getAllCollections() {
-        return collectionRepository.findAllBy();
     }
 
     @Override

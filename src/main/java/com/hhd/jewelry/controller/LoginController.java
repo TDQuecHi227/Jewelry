@@ -30,7 +30,8 @@ public class LoginController {
 
 
     @Autowired
-    public LoginController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public LoginController(UserRepository userRepository,
+                           PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -49,7 +50,8 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    public String postRegisterPage(@Valid @ModelAttribute("form") RegisterDto form, BindingResult br, Model model, RedirectAttributes ra) {
+    public String postRegisterPage(@Valid @ModelAttribute("form") RegisterDto form,
+                             BindingResult br, Model model, RedirectAttributes ra) {
         log.info("POST /register -> form: {}", form);
 
         if (br.hasErrors()) return "client/homepage/register";
