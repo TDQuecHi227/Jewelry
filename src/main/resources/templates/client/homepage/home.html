@@ -96,8 +96,17 @@
                      th:each="product : ${products}">
 <!--                     th:attr="data-day=${it.index % #lists.size(days)}">-->
 
-                    <div class="card h-100 border-0 shadow-sm">
-                        <img th:src="@{${product.imageUrls[0]}}" class="card-img-top" alt="Ảnh sản phẩm">
+        <div class="collection-track" id="collectionTrack">
+            <div class="collection-item"
+                 th:each="col : ${collections}"
+                 th:attr="data-collection-id=${col.id}">
+                <img th:src="@{${col.imageUrl}}" th:alt="${col.name}" />
+            </div>
+        </div>
+        <button class="col-nav col-next" aria-label="Sau">›</button>
+    </div>
+    <div class="collection-dots mt-3" id="collectionDots"></div>
+</section>
 
                         <div class="card-body text-center">
 

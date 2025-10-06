@@ -21,8 +21,6 @@ public class Manager {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-
     @OneToMany(mappedBy = "manager", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ManagerBudget> budgets;
-
 }
