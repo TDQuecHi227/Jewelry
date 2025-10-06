@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class ManagerBudget {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @ManyToOne
     @JoinColumn(name = "manager_id", nullable = false)
