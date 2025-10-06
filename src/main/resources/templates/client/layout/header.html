@@ -31,7 +31,7 @@
           <span class="text-muted small">
             Xin chào,
             <a th:href="@{/account}" class="fw-bold text-decoration-none"
-               th:text="${currentUser != null ? currentUser.fullname : #authentication.name}">User</a>
+               th:text="${currentUser != null ? currentUser.fullName : #authentication.name}">User</a>
 
           </span>
                     <form th:action="@{/logout}" method="post" class="m-0">

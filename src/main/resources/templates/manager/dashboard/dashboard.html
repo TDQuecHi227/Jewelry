@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{manager/layout/layout_admin}">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="row g-3 mb-3">
+        <div class="col-3">
+            <div class="metric users p-4 h-100">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="label">Số người dùng</div>
+                        <div class="value" th:text="${stats.totalUsers}">0</div>
+                        <div class="chip mt-1" th:if="${stats.deltaUsersWeek} != null"
+                             th:text="'↑ ' + ${stats.deltaUsersWeek} + ' trong 7 ngày'">↑ 0 trong 7 ngày</div>
+                    </div>
+                    <span class="fs-2">👤</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-3">
+            <div class="metric products p-4 h-100">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="label">Số sản phẩm</div>
+                        <div class="value" th:text="${stats.totalProducts}">0</div>
+                        <div class="chip mt-1" th:text="${stats.activeProducts} + ' đang bán'">0 đang bán</div>
+                    </div>
+                    <span class="fs-2">📦</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-3">
+            <div class="metric orders p-4 h-100">
+                <div class="label">Tổng đơn hàng</div>
+                <div class="value" th:text="${stats.totalOrders}">0</div>
+                <div class="small mt-1"
+                     th:classappend="${stats.orderTrendUp} ? ' text-success' : ' text-danger'"
+                     th:text="${stats.orderTrendUp} ? '↑ Tăng so với tuần trước' : '↓ Giảm so với tuần trước'">--</div>
+            </div>
+        </div>
+
+        <div class="col-3">
+            <div class="metric revenue p-4 h-100">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="label">Doanh thu hôm nay</div>
+                        <div class="value">
+                            <span th:text="${#numbers.formatDecimal(stats.revenueToday, 0, 'COMMA', 0, 'POINT')}">0</span>
+                            <span class="fs-6">₫</span>
+                        </div>
+                        <div class="small text-muted"
+                             th:text="'Tháng này: ' + ${#numbers.formatDecimal(stats.revenueThisMonth, 0, 'COMMA', 0, 'POINT')} + ' ₫'">
+                            Tháng này: 0 ₫
+                        </div>
+                    </div>
+                    <span class="fs-2">💰</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row g-3 mb-4">
+        <div class="col-12 col-xl-7">
+            <div class="card h-100">
+                <div class="card-header bg-white">Đơn hàng 7 ngày gần nhất</div>
+                <div class="card-body"><canvas id="ordersLine"></canvas></div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-5">
+            <div class="card h-100">
+                <div class="card-header bg-white">Doanh thu theo danh mục (tháng này)</div>
+                <div class="card-body"><canvas id="revenueBar"></canvas></div>
+            </div>
+        </div>
+    </div>
+    <div class="row g-3">
+        <div class="col-12 col-xl-7">
+            <div class="card h-100">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <span>Đơn hàng mới</span>
+                    <a class="btn btn-sm btn-primary" th:href="@{/admin/orders}">Xem tất cả</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-middle mb-0">
+                        <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Khách hàng</th>
+                            <th>Ngày</th>
+                            <th class="text-end">Tổng (₫)</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="o : ${recentOrders}">
+                            <td th:text="${o.code}">ORD-0001</td>
+                            <td th:text="${o.customerName}">Nguyễn Văn A</td>
+                            <td th:text="${#dates.format(o.createdAt, 'dd/MM HH:mm')}">01/09 10:00</td>
+                            <td class="text-end" th:text="${#numbers.formatDecimal(o.total, 0, 'COMMA', 0, 'POINT')}">0</td>
+                            <td>
+<span class="badge rounded-pill" th:classappend="${o.status}=='PAID' ? ' text-bg-success' : (${o.status}=='PENDING' ? ' text-bg-warning' : ' text-bg-secondary')"
+      th:text="${o.status}">PENDING</span>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(recentOrders)}">
+                            <td colspan="5" class="text-center text-muted py-4">Chưa có đơn hàng</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-5">
+            <div class="card h-100">
+                <div class="card-header bg-white">Sản phẩm sắp hết hàng</div>
+                <div class="table-responsive">
+                    <table class="table align-middle mb-0">
+                        <thead class="table-light">
+                        <tr>
+                            <th>Tên</th>
+                            <th class="text-center">Tồn kho</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="p: ${lowStocks}">
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <img th:src="${p.thumbnailUrl}" alt="thumb" width="36" height="36" class="rounded border" />
+                                    <span th:text="${p.name}">Sản phẩm</span>
+                                </div>
+                            </td>
+                            <td class="text-center" th:text="${p.qty}">0</td>
+                            <td class="text-end"><a th:href="@{'/admin/products/' + ${p.id}}" class="btn btn-sm btn-outline-primary">Chi tiết</a></td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(lowStocks)}">
+                            <td colspan="3" class="text-center text-muted py-4">Không có cảnh báo tồn kho</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        const ordersSeries = /*[[${chart.ordersByDay.values}]]*/ [12,10,9,8,15,20,7];
+        const ordersLabels = /*[[${chart.ordersByDay.labels}]]*/ ["T2","T3","T4","T5","T6","T7","CN"];
+        const revLabels = /*[[${chart.revenueByCategory.labels}]]*/ ["Nhẫn","Dây chuyền","Vòng tay","Bông tai"];
+        const revSeries = /*[[${chart.revenueByCategory.values}]]*/ [12000000, 9000000, 7000000, 3000000];
+        new Chart(document.getElementById('ordersLine'), {type:'line', data:{labels:ordersLabels, datasets:[{label:'Đơn hàng', data:ordersSeries, tension:.35}]}});
+        new Chart(document.getElementById('revenueBar'), {type:'bar', data:{labels:revLabels, datasets:[{label:'Doanh thu (₫)', data:revSeries}]}});
+    </script>
+</div>
+</body>
+</html>

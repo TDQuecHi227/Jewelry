@@ -1,9 +1,7 @@
 package com.hhd.jewelry.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,7 +18,7 @@ public class User {
     private Integer id;
 
     @Column(nullable = false)
-    private String fullname;
+    private String fullName;
 
     @Column(unique = true)
     private String phone;
@@ -47,13 +45,21 @@ public class User {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "user")
+    @ToString.Exclude @EqualsAndHashCode.Exclude
     private List<Order> orders;
 
     @ManyToOne
     @JoinColumn(name = "managed_by")
+    @ToString.Exclude @EqualsAndHashCode.Exclude
     private Manager manager;
+
+    @OneToOne(mappedBy = "user")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Cart  cart;
 
     public enum Role {
         USER, ADMIN, MANAGER, GUEST
     }
+
 }

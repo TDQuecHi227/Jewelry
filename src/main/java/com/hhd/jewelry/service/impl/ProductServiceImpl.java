@@ -1,8 +1,15 @@
 package com.hhd.jewelry.service.impl;
 
+import com.hhd.jewelry.entity.Cart;
+import com.hhd.jewelry.entity.CartItem;
 import com.hhd.jewelry.entity.Product;
+import com.hhd.jewelry.entity.User;
+import com.hhd.jewelry.repository.CartItemRepository;
+import com.hhd.jewelry.repository.CartRepository;
 import com.hhd.jewelry.repository.ProductRepository;
+import com.hhd.jewelry.repository.UserRepository;
 import com.hhd.jewelry.service.ProductService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,9 +18,16 @@ import java.util.Optional;
 @Service
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
+    private final CartRepository cartRepository;
+    private final CartItemRepository cartItemRepository;
+    private final UserRepository  userRepository;
 
-    public ProductServiceImpl(ProductRepository productRepository) {
+
+    public ProductServiceImpl(ProductRepository productRepository, CartRepository cartRepository, CartItemRepository cartItemRepository, UserRepository userRepository) {
         this.productRepository = productRepository;
+        this.cartRepository = cartRepository;
+        this.cartItemRepository = cartItemRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -101,5 +115,36 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void resetAutoIncrement() {
         productRepository.resetAutoIncrement();
+    }
+
+    @Override
+    public void AddProductToCart(String email, String serialNumber) {
+        User user = userRepository.findByEmail(email).orElse(null);
+        if (user != null) {
+            Cart cart = this.cartRepository.findByUser(user);
+            if (cart == null) {
+                Cart newCart = new Cart();
+                newCart.setUser(user);
+            }
+            Product product = productRepository.findBySerialNumber(serialNumber).orElse(null);
+            CartItem cartItem = cartItemRepository.findCartItemByCartAndProduct(cart, product).orElse(null);
+            if (cartItem == null || cartItem.getCart() != cart) {
+                CartItem newCartItem = new CartItem();
+                newCartItem.setProduct(product);
+                newCartItem.setCart(cart);
+                newCartItem.setQuantity(1);
+                newCartItem.setPrice(product.getPrice());
+                this.cartItemRepository.save(newCartItem);
+            } else {
+                cartItem.setQuantity(cartItem.getQuantity() + 1);
+                cartItem.setPrice(product.getPrice() * cartItem.getQuantity());
+                this.cartItemRepository.save(cartItem);
+            }
+        }
+    }
+    @Transactional
+    @Override
+    public void RemoveProductToCart(Integer cart_id, Integer product_id) {
+        cartItemRepository.deleteByCart_CartIdAndProduct_Id(cart_id, product_id);
     }
 }

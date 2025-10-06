@@ -46,9 +46,9 @@ public class SecurityConfig {
                                 "/",
                                 "/login",            // MỞ RÕ
                                 "/register", "/forgot-password",
-                                "/css/**", "/js/**", "/images/**"
+                                "/css/**", "/js/**", "/images/**", "/cart/**"
                         ).permitAll()
-                        .requestMatchers("/cart/**", "/checkout/**", "/orders/**", "/account/**").authenticated()
+                        .requestMatchers("/checkout/**", "/orders/**", "/account/**").authenticated()
                         .anyRequest().permitAll()
                 )
                 .formLogin(f -> f

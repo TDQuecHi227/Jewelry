@@ -1,9 +1,7 @@
 package com.hhd.jewelry.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "addresses")
@@ -17,6 +15,7 @@ public class Address {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @ToString.Exclude @EqualsAndHashCode.Exclude
     private User user;
 
     @Column(nullable = false)
