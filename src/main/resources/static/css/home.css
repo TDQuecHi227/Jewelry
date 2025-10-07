@@ -76,6 +76,153 @@ body {
     font-weight: bold;
 }
 
+/* === Collection carousel (Bộ sưu tập mới) === */
+.collections h2 {
+    font-size: 22px;
+    color: #09304a;
+    margin-top: 6px;
+}
+
+.collection-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    position: relative;
+}
+
+.collection-track {
+    position: relative;
+    width: 60%;
+    margin: 0 auto;
+    height: 280px;
+    overflow: visible;
+}
+
+/* Item */
+.collection-item {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    width: 260px;
+    height: 260px;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 8px 20px rgba(3, 33, 66, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    touch-action: manipulation;
+
+    /* quan trọng */
+    transform: translateX(-50%) scale(0.85);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    z-index: 1;
+}
+
+.collection-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+}
+
+.collection-item .collection-title {
+    position: absolute;
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    padding: 8px 14px;
+    border-radius: 999px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    font-weight: 700;
+    color: #0d3762;
+    font-size: 14px;
+}
+
+.collection-item.active {
+    transform: translateX(-50%) scale(1);
+    z-index: 200;
+}
+
+/* Nút điều hướng */
+.col-nav {
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #0d3762;
+    cursor: pointer;
+}
+.col-nav:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+/* Dots */
+.collection-dots {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+.collection-dots button {
+    border: none;
+    background: #d5d5d5;
+    cursor: pointer;
+}
+.collection-dots button.active {
+    background: #0d3762;
+    box-shadow: 0 2px 6px rgba(13, 55, 98, 0.18);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .collection-track {
+        height: 210px;
+    }
+    .collection-item {
+        width: 180px;
+        height: 180px;
+        top: 6px;
+    }
+    .collection-item .collection-title {
+        font-size: 13px;
+    }
+}
+@media (max-width: 600px) {
+    .collection-track {
+        height: 160px;
+    }
+    .collection-item {
+        width: 130px;
+        height: 130px;
+        top: 4px;
+    }
+    .collection-item .collection-title {
+        display: none;
+    }
+}
+@media (max-width: 900px) {
+    .commitment-list { gap: 16px; }
+    .commitment-item { padding: 12px 10px; min-width: 140px; }
+    .commitment-icon { width: 36px; height: 36px; }
+    .commitment-title { font-size: 15px; }
+    .commitment-desc { font-size: 13px; }
+}
+@media (max-width: 600px) {
+    .commitment-list { flex-direction: column; gap: 10px; }
+    .commitment-item { width: 100%; min-width: unset; justify-content: flex-start; }
+}
+
 /* =========================================================
    5) FEATURED PRODUCTS (GRID + CARD)
    ========================================================= */
