@@ -150,4 +150,83 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+    const slider = document.querySelector('.viewed-list');
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+
+    function getItemWidth() {
+        return document.querySelector('.viewed-item').offsetWidth + 20;
+        // 20 là gap (nếu bạn để gap khác thì chỉnh lại)
+    }
+
+    nextBtn.addEventListener('click', () => {
+        slider.scrollLeft += getItemWidth();
+    });
+
+    prevBtn.addEventListener('click', () => {
+        slider.scrollLeft -= getItemWidth();
+    });
+});
+
+
+// ===== Collection carousel + filter products by collection =====
+document.addEventListener('DOMContentLoaded', () => {
+    const track = document.getElementById('collectionTrack');
+    if (!track) return;
+
+    const items = Array.from(track.querySelectorAll('.collection-item'));
+    const dotsWrap = document.getElementById('collectionDots');
+    const prevBtn = document.querySelector('.col-prev');
+    const nextBtn = document.querySelector('.col-next');
+
+    let activeIndex = 0;
+    const spacing = 130; // khoảng cách giữa các item
+
+    // tạo dots
+    items.forEach((it, idx) => {
+        const b = document.createElement('button');
+        if (idx === 0) b.classList.add('active');
+        b.addEventListener('click', () => setActive(idx));
+        dotsWrap.appendChild(b);
+    });
+
+    function setActive(index) {
+        activeIndex = (index + items.length) % items.length;
+
+        items.forEach((it, i) => {
+            it.classList.remove('active');
+            let delta = i - activeIndex;
+
+            // để hai bên chia đều, không dồn 1 phía
+            const middle = Math.floor(items.length / 2);
+            if (delta > middle) delta -= items.length;
+            if (delta < -middle) delta += items.length;
+
+            const tx = delta * spacing;
+            const scale = delta === 0 ? 1 : 0.85;
+
+            it.style.transform = `translateX(calc(-50% + ${tx}px)) scale(${scale})`;
+            it.style.zIndex = String(100 - Math.abs(delta));
+
+            if (delta === 0) it.classList.add('active');
+        });
+
+        // update dots
+        dotsWrap.querySelectorAll("button").forEach((d, i) =>
+            d.classList.toggle("active", i === activeIndex)
+        );
+    }
+
+
+    // nav
+    prevBtn && prevBtn.addEventListener('click', () => setActive(activeIndex - 1));
+    nextBtn && nextBtn.addEventListener('click', () => setActive(activeIndex + 1));
+
+    // click item
+    items.forEach((it, idx) => it.addEventListener('click', () => setActive(idx)));
+
+    // chạy ngay khi load để chia đều trái/phải
+    setActive(3);
+});
 
