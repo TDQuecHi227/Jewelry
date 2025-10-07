@@ -27,25 +27,12 @@
 <section class="categories">
     <h2>Danh mục nổi bật</h2>
     <div class="category-grid">
-        <div class="category-item">
-            <img th:src="@{/images/category/Nhan.jpg}" alt="Nhẫn" />
-            <p>Nhẫn</p>
-        </div>
-        <div class="category-item">
-            <img th:src="@{/images/category/TrangSucBac.jpg}" alt="Trang sức bạc" />
-            <p>Trang sức bạc</p>
-        </div>
-        <div class="category-item">
-            <img th:src="@{/images/category/DayChuyen.jpg}" alt="Dây chuyền" />
-            <p>Dây chuyền</p>
-        </div>
-        <div class="category-item">
-            <img th:src="@{/images/category/BongTai.jpg}" alt="Bông tai" />
-            <p>Bông tai</p>
+        <div class="category-item" th:each="category : ${categories}">
+            <img th:src="@{${category.getImageUrl()}}" alt="Ảnh danh mục">
+            <p th:text="${category.name}"></p>
         </div>
     </div>
 </section>
-
 
 
 <!--&lt;!&ndash; Flash Sale Products (dùng Bootstrap grid) &ndash;&gt;-->
@@ -135,10 +122,8 @@
         <button class="fs-nav fs-next"
                 th:if="${#lists.size(products) > 5}"
                 type="button" aria-label="Sau">›</button>
-    </div>
-</div>
 
-<!-- Sản phẩm nổi bật -->
+
 <section class="featured">
     <h2>Sản phẩm nổi bật</h2>
     <div class="product-grid">
