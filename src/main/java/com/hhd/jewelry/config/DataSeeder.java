@@ -52,6 +52,7 @@ public class DataSeeder implements CommandLineRunner {
         createOrUpdateCollection("Summer", "/images/collections/Summer_PNJ.jpg");
         createOrUpdateCollection("VietNam", "/images/collections/VietNam_PNJ.jpg");
         createOrUpdateCollection("Disney", "/images/collections/Disney_PNJ.jpg");
+        createOrUpdateCollection("CMVS", "/images/collections/CMVS_PNJ.jpg");
     }
 
     void seedProducts() {
