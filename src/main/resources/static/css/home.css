@@ -51,6 +51,59 @@ body {
     display: block;
 }
 
+/* === Cam kết dịch vụ (service commitments) === */
+.service-commitments {
+    width: 100%;
+    margin: 40px auto 32px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.commitment-list {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 900px;
+}
+.commitment-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #f6f6f6;
+    border-radius: 14px;
+    padding: 16px 32px;
+    min-width: 220px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+.commitment-icon {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+}
+.commitment-title {
+    font-weight: bold;
+    color: #0d3762;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+.commitment-desc {
+    color: #444;
+    font-size: 15px;
+}
+@media (max-width: 900px) {
+    .commitment-list { gap: 16px; }
+    .commitment-item { padding: 12px 10px; min-width: 140px; }
+    .commitment-icon { width: 36px; height: 36px; }
+    .commitment-title { font-size: 15px; }
+    .commitment-desc { font-size: 13px; }
+}
+@media (max-width: 600px) {
+    .commitment-list { flex-direction: column; gap: 10px; }
+    .commitment-item { width: 100%; min-width: unset; justify-content: flex-start; }
+}
+
 /* =========================================================
    4) CATEGORIES
    ========================================================= */
