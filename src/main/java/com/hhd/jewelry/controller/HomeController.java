@@ -1,8 +1,10 @@
 package com.hhd.jewelry.controller;
 
 import com.hhd.jewelry.entity.Category;
+import com.hhd.jewelry.entity.Collection;
 import com.hhd.jewelry.entity.Product;
 import com.hhd.jewelry.service.CategoryService;
+import com.hhd.jewelry.service.CollectionService;
 import com.hhd.jewelry.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import com.hhd.jewelry.DTO.ProfileDto;
@@ -31,14 +33,17 @@ public class HomeController {
     private final ProductService productService;
     private final CategoryService categoryService;
     private final UserRepository userRepository;
+    private final CollectionService collectionService;
 
     @GetMapping("/")
     public String home(Model model) {
         List<Product> products = productService.getAllProducts();
         List<Category> categories = categoryService.getAllCategories();
+        List<Collection> collections = collectionService.getAllCollections();
 
         model.addAttribute("products", products);
         model.addAttribute("categories", categories);
+        model.addAttribute("collections", collections);
 
         return "client/homepage/home";
     }
