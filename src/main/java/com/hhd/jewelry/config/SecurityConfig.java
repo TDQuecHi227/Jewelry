@@ -51,7 +51,6 @@ public class SecurityConfig {
                         .requestMatchers("/checkout/**", "/orders/**", "/account/**").authenticated()
                         .anyRequest().permitAll()
                 )
-                .csrf(csrf -> csrf.disable())
                 .formLogin(f -> f
                         .loginPage("/login")          // GET trả về login.html
                         .loginProcessingUrl("/login") // POST xử lý (khớp form)
