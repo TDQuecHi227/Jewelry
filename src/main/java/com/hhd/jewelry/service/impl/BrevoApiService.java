@@ -1,16 +1,17 @@
-package com.hhd.jewelry.service;
+package com.hhd.jewelry.service.impl;
 
+import com.hhd.jewelry.service.MailService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Map;
-
 @Service
-public class EmailService {
-
+@Profile("prod")
+public class BrevoApiService implements MailService {
     @Value("${BREVO_API_KEY}")
     private String apiKey;
 
@@ -25,11 +26,11 @@ public class EmailService {
     public void send(String to, String subject, String text) {
         try {
             Map<String, Object> payload = Map.of(
-                "sender", Map.of("email", senderEmail, "name", senderName),
-                "to", List.of(Map.of("email", to)),
-                "subject", subject,
-                "htmlContent", buildHtml(text),
-                "textContent", text
+                    "sender", Map.of("email", senderEmail, "name", senderName),
+                    "to", List.of(Map.of("email", to)),
+                    "subject", subject,
+                    "htmlContent", buildHtml(text),
+                    "textContent", text
             );
 
             HttpHeaders headers = new HttpHeaders();
