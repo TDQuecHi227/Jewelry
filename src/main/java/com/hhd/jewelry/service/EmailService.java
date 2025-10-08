@@ -24,7 +24,6 @@ public class EmailService {
 
     public void send(String to, String subject, String text) {
         try {
-            // Payload theo spec Brevo: https://developers.brevo.com/reference/sendtransacemail
             Map<String, Object> payload = Map.of(
                 "sender", Map.of("email", senderEmail, "name", senderName),
                 "to", List.of(Map.of("email", to)),
@@ -35,15 +34,17 @@ public class EmailService {
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.set("api-key", apiKey);
+            headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+            String cleanKey = apiKey == null ? "" : apiKey.replaceAll("\\s+", ""); // <- vá ký tự ẩn
+            headers.set("api-key", cleanKey);
 
             HttpEntity<Map<String, Object>> req = new HttpEntity<>(payload, headers);
-
             RestTemplate rt = new RestTemplate();
             ResponseEntity<String> res = rt.exchange(API_URL, HttpMethod.POST, req, String.class);
 
-            if (!res.getStatusCode().is2xxSuccessful() && res.getStatusCodeValue() != 201) {
-                throw new RuntimeException("Brevo error " + res.getStatusCodeValue() + ": " + res.getBody());
+            int code = res.getStatusCodeValue();
+            if (code != 200 && code != 201 && code != 202) {
+                throw new RuntimeException("Brevo HTTP " + code + " body=" + res.getBody());
             }
         } catch (Exception e) {
             throw new RuntimeException("Send OTP failed via Brevo API: " + e.getMessage(), e);
