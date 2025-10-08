@@ -8,6 +8,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -45,18 +48,24 @@ public class VNPayService {
         vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
 
         // Đảm bảo múi giờ là GMT+7 cho VNPAY
-        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-        String vnp_CreateDate = formatter.format(cld.getTime());
-        vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
+//        Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT-7"));
+//        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+//        String vnp_CreateDate = formatter.format(cld.getTime());
+        ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        String vnp_CreateDate = now.format(formatter);
+        String vnp_ExpireDate = now.plusMinutes(15).format(formatter);
 
-        cld.add(Calendar.MINUTE, 15);
-        String vnp_ExpireDate = formatter.format(cld.getTime());
+        vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
+//
+//        cld.add(Calendar.MINUTE, 15);
+//        String vnp_ExpireDate = formatter.format(cld.getTime());
         vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
         // THÊM LẠI 4 DÒNG NÀY ĐỂ DEBUG
         System.out.println("--- VNPAY DEBUG ---");
         System.out.println("Final CreateDate sent: " + vnp_CreateDate);
         System.out.println("Final ExpireDate sent: " + vnp_ExpireDate);
+        System.out.println(vnp_TmnCode);
         System.out.println("--- END DEBUG ---");
         List<String> fieldNames = new ArrayList<>(vnp_Params.keySet());
         Collections.sort(fieldNames);
