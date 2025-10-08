@@ -53,7 +53,11 @@ public class VNPayService {
         cld.add(Calendar.MINUTE, 15);
         String vnp_ExpireDate = formatter.format(cld.getTime());
         vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
-
+        // THÊM LẠI 4 DÒNG NÀY ĐỂ DEBUG
+        System.out.println("--- VNPAY DEBUG ---");
+        System.out.println("Final CreateDate sent: " + vnp_CreateDate);
+        System.out.println("Final ExpireDate sent: " + vnp_ExpireDate);
+        System.out.println("--- END DEBUG ---");
         List<String> fieldNames = new ArrayList<>(vnp_Params.keySet());
         Collections.sort(fieldNames);
         StringBuilder hashData = new StringBuilder();
