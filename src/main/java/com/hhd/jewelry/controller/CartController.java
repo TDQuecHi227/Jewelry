@@ -3,6 +3,7 @@ package com.hhd.jewelry.controller;
 import com.hhd.jewelry.DTO.CheckoutDTO;
 import com.hhd.jewelry.entity.*;
 import com.hhd.jewelry.repository.*;
+import com.hhd.jewelry.service.MomoService;
 import com.hhd.jewelry.service.ProductService;
 import com.hhd.jewelry.service.VNPayService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,7 +33,7 @@ public class CartController {
     private final OrderItemRepository orderItemRepository;
     private final CartItemRepository  cartItemRepository;
     private final VNPayService vnPayService;
-
+    private final MomoService momoService;
     @GetMapping("/cart")
     public String  getCartPage(Model model, Authentication authentication) {
         String email = authentication.getName();
@@ -175,7 +176,7 @@ public class CartController {
 
     @PostMapping("/checkout/confirm")
     @Transactional
-    public String confirmCheckout(@Valid @ModelAttribute CheckoutDTO form, BindingResult errors, Model model, Authentication auth, @ModelAttribute("carts") List<CartItem> carts, HttpServletRequest request) throws UnsupportedEncodingException {
+    public String confirmCheckout(@Valid @ModelAttribute CheckoutDTO form, BindingResult errors, Model model, Authentication auth, @ModelAttribute("carts") List<CartItem> carts, HttpServletRequest request) throws Exception {
         // 1) Validate đúng các field trên form
         if (errors.hasErrors()) {
             // Bind lại vài biến view bạn đang dùng để render lại trang
@@ -254,6 +255,10 @@ public class CartController {
             String orderInfo = "Thanh toan don hang " + order.getId();
             String paymentUrl = vnPayService.createPaymentUrl(order.getId(), totalAmount, orderInfo, request);
             return "redirect:" + paymentUrl;
+        }  else if ("MOMO".equalsIgnoreCase(paymentMethod)) {
+            String orderInfo = "Thanh toan don hang " + order.getId();
+            String momoUrl = momoService.createMomoPayment(order.getId(), totalAmount, orderInfo, request);
+            return "redirect:" + momoUrl;
         } else { // Giả sử là COD
             return "redirect:/"; // Chuyển đến trang đặt hàng thành công
         }
