@@ -26,7 +26,7 @@ public class Order {
     private Status status = Status.PENDING;
 
     private LocalDateTime createdAt = LocalDateTime.now();
-
+    private String methodPay;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     @ToString.Exclude @EqualsAndHashCode.Exclude
     private List<OrderItem> items;

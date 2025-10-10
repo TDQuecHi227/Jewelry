@@ -200,6 +200,7 @@ public class CartController {
         order.setUser(user);
         order.setStatus(Order.Status.PENDING);
         order.setCreatedAt(LocalDateTime.now());
+        order.setMethodPay(form.getPaymentMethod());
         orderRepository.save(order); // cần id
 
         List<OrderItem> items = new ArrayList<>();
