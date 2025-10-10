@@ -16,7 +16,6 @@ public class PaymentController {
     public String vnpayReturn(HttpServletRequest request, Model model) {
         String status = request.getParameter("vnp_ResponseCode");
         String orderIdStr = request.getParameter("vnp_TxnRef");
-
         if (orderIdStr != null && !orderIdStr.isEmpty()) {
             try {
                 Integer orderId = Integer.parseInt(orderIdStr);
@@ -25,7 +24,6 @@ public class PaymentController {
                 if (order != null) {
                     if ("00".equals(status)) {
                         model.addAttribute("message", "Thanh toán thành công!");
-                        // TODO: Xóa giỏ hàng tại đây nếu cần
                     } else {
                         model.addAttribute("message", "Thanh toán thất bại. Vui lòng thử lại.");
                     }

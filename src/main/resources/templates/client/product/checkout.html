@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<header th:replace="client/layout/header :: header"></header>
+<header th:replace="~{client/layout/header :: header}"></header>
 
 <div class="checkout-wrap">
     <form class="card card-ck shadow-sm" method="post" th:action="@{/checkout/confirm}">
